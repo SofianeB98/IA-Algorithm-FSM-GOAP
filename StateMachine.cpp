@@ -1,6 +1,7 @@
 ﻿#include "StateMachine.h"
 #include <iostream>
 
+#pragma region STATE MACHINE CLASS
 StateMachine::StateMachineBase::StateMachineBase()
 {
 	
@@ -35,6 +36,8 @@ void StateMachine::StateMachineBase::ProcessState()
 			ChangeState(new State());
 	}
 }
+#pragma endregion 
+
 
 #pragma region STATE CLASS
 StateMachine::State::State()
@@ -42,9 +45,9 @@ StateMachine::State::State()
 	this->Transitions.reserve(5);
 }
 
-void StateMachine::State::AddTransition(Transition* i)
+void StateMachine::State::AddTransition(BaseTransition* t)
 {
-	this->Transitions.push_back(i);
+	this->Transitions.push_back(t);
 }
 
 void StateMachine::State::OnStateEnter()

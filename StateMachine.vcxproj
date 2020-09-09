@@ -139,11 +139,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Monster.cpp" />
     <ClCompile Include="StateMachine.cpp" />
     <ClCompile Include="StateMachine_Main.cpp" />
+    <ClCompile Include="WorldMaster.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Monster.h" />
     <ClInclude Include="StateMachine.h" />
+    <ClInclude Include="WorldMaster.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

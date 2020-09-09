@@ -1,26 +1,19 @@
 ﻿#pragma once
 #include <vector>
 
-enum Element
-{
-	FIRE,
-	WATER,
-	GRASS,
-
-	NEUTRAL
-};
+class FightData;
+class BaseTransition;
+class Monster;
 
 namespace StateMachine
-{
-	class Transition;
-	
+{	
 	class State
 	{
 	public:
-		std::vector<Transition*> Transitions;
+		std::vector<BaseTransition*> Transitions;
 		
 		State();
-		void AddTransition(Transition* t);
+		void AddTransition(BaseTransition* t);
 
 		virtual void OnStateEnter();
 	};
@@ -57,9 +50,6 @@ namespace StateMachine
 		BaseTransition(State* end);
 		virtual bool Process(FightData* fightData) = 0;
 	};
-	class FightData {
-
-	};
 
 	class LifeConditionTransition : BaseTransition
 	{
@@ -74,15 +64,4 @@ namespace StateMachine
 		char life;
 	};
 
-
-
-	
-
-
 }
-
-/*
- * 		char life;
-		Element element;
-		char healQuantity;
- */

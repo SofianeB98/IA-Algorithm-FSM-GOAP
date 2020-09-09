@@ -1,4 +1,6 @@
 #include <iostream>
+
+#include "Monster.h"
 #include "StateMachine.h"
 
 using namespace StateMachine;
@@ -13,28 +15,45 @@ int main()
 	int element;
 	
 	std::cin >> element;
-	//Create IA player monster
-
-	StateMachineBase monsterA;
-	StateMachineBase monsterB;
-
-	State* x;
-	x->AddTransition(nullptr);
 	
-	while (true)
+	Monster monsterA;
+	//Create IA player monster
+	switch (element)
+	{
+	default:
+	case Element::FIRE:
+		monsterA = Monster(Element::FIRE);
+		break;
+		
+	case Element::WATER:
+		monsterA = Monster(Element::WATER);
+		break;
+
+	case Element::GRASS:
+		monsterA = Monster(Element::GRASS);
+		break;
+	}
+
+	
+	//StateMachineBase monsterA;
+	//StateMachineBase monsterB;
+
+	//State* x;
+	//x->AddTransition(nullptr);
+	
+	//while (true)
 	{
 		//initialise monster B
-		monsterB = StateMachineBase();
+		//monsterB = StateMachineBase();
 
 		//Combat
 		while (true /*si a && b == en vie*/)
 		{
-			monsterA.ChangeState(new State());
-			monsterA.ProcessState(/*me, other or fightdata ==> ref*/);
-			monsterA.ChangeState(new State());
+			//while(true != false)
+			//	monsterA.ProcessState(/*me, other or fightdata ==> ref*/);
 			//wait
 
-			monsterB.ProcessState(/*me, other or fightdata == ref*/);
+//			monsterB.ProcessState(/*me, other or fightdata == ref*/);
 
 			//exit when a monster is not alive
 			break;
@@ -43,9 +62,9 @@ int main()
 		//if my monster die, exit loop
 
 		//else, heal
+		//break;
 	}
 	//exit when a.alive == false
-
 	
 	std::cout << "Your monster die ! " << std::endl;
 
