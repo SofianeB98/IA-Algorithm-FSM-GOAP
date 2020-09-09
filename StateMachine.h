@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <vector>
 
-class FightData;
+class WorldMaster;
 class Monster;
 
 namespace StateMachine
@@ -12,10 +12,10 @@ namespace StateMachine
 	class State
 	{
 	public:
-		std::vector<BaseTransition*> Transitions;
+		std::vector<const BaseTransition*> Transitions;
 		
 		State();
-		void AddTransition(BaseTransition* t);
+		void AddTransition(const BaseTransition* t);
 
 		virtual ~State();
 		
@@ -55,7 +55,7 @@ namespace StateMachine
 
 		}
 		BaseTransition(State* end);
-		virtual bool Process(FightData* fightData) = 0;
+		virtual bool Process(const WorldMaster& fightData) = 0;
 	};
 
 	class LifeConditionTransition : BaseTransition
@@ -64,7 +64,7 @@ namespace StateMachine
 
 		LifeConditionTransition(State* endState, bool greater, char life);
 
-		virtual bool Process(const FightData& fightData);
+		virtual bool Process(const WorldMaster& fightData);
 
 	private:
 		bool greater;

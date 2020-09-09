@@ -2,6 +2,17 @@
 
 #include "Monster.h"
 #include <iostream>
+#include <time.h>
+
+void waitForMilliseconds(int milli)
+{
+	// Cross-platform sleep function
+	clock_t end_time;
+	end_time = clock() + milli * CLOCKS_PER_SEC / 1000;
+	while (clock() < end_time) {
+		//blank loop for waiting
+	}
+}
 
 void WorldMaster::StartWorld()
 {
@@ -31,6 +42,13 @@ void WorldMaster::ProcessBattle()
 		//While is monster turn
 		//-Process State
 
+		std::cout << "wait";
+		
+		//wait X milliseconds before execute the next
+		waitForMilliseconds(1500);
+
+		std::cout << "   after wait " << std::endl;
+		
 		//Init turn state ?
 		//While is monster turn
 		//-Process State

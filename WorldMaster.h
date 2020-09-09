@@ -16,7 +16,7 @@ public:
 	
 private:
 	void ProcessBattle();
-
+	void waitForMilliseconds(int milli);
 };
 
 #endif

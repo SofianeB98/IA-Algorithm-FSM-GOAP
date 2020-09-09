@@ -21,6 +21,7 @@ void StateMachine::StateMachineBase::ChangeState(State* targetState)
 {
 	State* prevState = this->currentState;
 
+	this->currentState = nullptr;
 	this->currentState = targetState;
 
 	this->currentState->OnStateEnter();
@@ -45,7 +46,7 @@ StateMachine::State::State()
 	this->Transitions.reserve(5);
 }
 
-void StateMachine::State::AddTransition(BaseTransition* t)
+void StateMachine::State::AddTransition(const BaseTransition* t)
 {
 	this->Transitions.push_back(t);
 }
@@ -68,7 +69,7 @@ StateMachine::LifeConditionTransition::LifeConditionTransition(State* endState, 
 	this->life = life;
 }
 
-bool StateMachine::LifeConditionTransition::Process(const FightData& fightData)
+bool StateMachine::LifeConditionTransition::Process(const WorldMaster& fightData)
 {
 	return false;
 }
