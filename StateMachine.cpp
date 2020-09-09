@@ -1,14 +1,54 @@
 ﻿#include "StateMachine.h"
-
 #include <iostream>
 
-void StateMachine::StateMachineBase::foo()
+StateMachine::StateMachineBase::StateMachineBase()
 {
-	std::cout << "State MAchine foo" << std::endl;
-
+	
 }
 
-void StateMachine::State::stateFoo()
+void StateMachine::StateMachineBase::CreateStateMachine()
 {
-	std::cout << "State foo" << std::endl;
+	
 }
+
+StateMachine::State* StateMachine::StateMachineBase::getCurrentState() const
+{
+	return this->currentState;
+}
+
+void StateMachine::StateMachineBase::ChangeState(State* targetState)
+{
+	State* prevState = this->currentState;
+
+	this->currentState = targetState;
+
+	this->currentState->OnStateEnter();
+	
+	delete prevState;
+}
+
+void StateMachine::StateMachineBase::ProcessState()
+{
+	for (int i = 0; i < this->currentState->Transitions.size(); ++i)
+	{
+		if (currentState->Transitions[i])
+			ChangeState(new State());
+	}
+}
+
+#pragma region STATE CLASS
+StateMachine::State::State()
+{
+	this->Transitions.reserve(5);
+}
+
+void StateMachine::State::AddTransition(Transition* i)
+{
+	this->Transitions.push_back(i);
+}
+
+void StateMachine::State::OnStateEnter()
+{
+	//process
+}
+#pragma endregion
