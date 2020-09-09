@@ -62,6 +62,7 @@ Monster::Monster(const Element& elem, const char l)
 Monster& Monster::operator=(Monster other)
 {
 	swap(other);
+	return *this;
 }
 
 void Monster::swap(Monster& m)

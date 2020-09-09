@@ -24,17 +24,17 @@ int main()
 	default:
 	case 1:
 		world.monsterPlayer = new Monster(Element::FIRE);
-		std::cout << "You've choosen FIRE !! This is so Hot !";
+		std::cout << "You've choosen FIRE !! This is so Hot !" << std::endl;
 		break;
 		
 	case 2:
 		world.monsterPlayer = new Monster(Element::WATER);
-		std::cout << "You've choosen WATER !! You're Aquaman !!";
+		std::cout << "You've choosen WATER !! You're Aquaman !!" << std::endl;
 		break;
 
 	case 3:
 		world.monsterPlayer = new Monster(Element::GRASS);
-		std::cout << "You've choosen GRASS !! It's so Ecologic, Vegan !";
+		std::cout << "You've choosen GRASS !! It's so Ecologic, Vegan !" << std::endl;
 		break;
 	}
 

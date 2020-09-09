@@ -8,6 +8,7 @@ namespace StateMachine
 {	
 	class BaseTransition;
 
+#pragma region STATE CLASS
 	class State
 	{
 	public:
@@ -16,8 +17,13 @@ namespace StateMachine
 		State();
 		void AddTransition(BaseTransition* t);
 
-		virtual void OnStateEnter();
+		virtual ~State();
+		
+		virtual void OnStateEnter() = 0;
 	};
+
+	
+#pragma endregion 
 	
 	class StateMachineBase
 	{
@@ -40,7 +46,7 @@ namespace StateMachine
 		State* getCurrentState() const;
 	};
 
-
+#pragma region TRANSITION CLASS
 	class BaseTransition
 	{
 	public:
@@ -64,5 +70,5 @@ namespace StateMachine
 		bool greater;
 		char life;
 	};
-
+#pragma endregion 
 }

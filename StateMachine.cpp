@@ -33,7 +33,7 @@ void StateMachine::StateMachineBase::ProcessState()
 	for (int i = 0; i < this->currentState->Transitions.size(); ++i)
 	{
 		if (currentState->Transitions[i])
-			ChangeState(new State());
+			ChangeState(currentState->Transitions[i]->end);
 	}
 }
 #pragma endregion 
@@ -51,10 +51,14 @@ void StateMachine::State::AddTransition(BaseTransition* t)
 }
 
 
-void StateMachine::State::OnStateEnter()
+StateMachine::State::~State()
 {
-	//process
+	for (auto& transition : Transitions)
+	{
+		delete transition;
+	}
 }
+
 #pragma endregion
 
 StateMachine::LifeConditionTransition::LifeConditionTransition(State* endState, bool greater, char life) 
