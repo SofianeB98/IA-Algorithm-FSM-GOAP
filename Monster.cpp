@@ -36,6 +36,29 @@ Monster::Monster(const Monster& m)
 	this->life = m.life;
 }
 
+Monster::Monster(const Element& elem, const char l)
+{
+	this->life = l;
+	this->element = elem;
+
+	switch (this->element)
+	{
+	default:
+	case Element::FIRE:
+		this->weakness = Element::WATER;
+		break;
+
+	case Element::WATER:
+		this->weakness = Element::GRASS;
+		break;
+
+	case Element::GRASS:
+		this->weakness = Element::FIRE;
+		break;
+	}
+}
+
+
 Monster& Monster::operator=(Monster other)
 {
 	swap(other);

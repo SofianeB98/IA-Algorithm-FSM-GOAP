@@ -13,8 +13,8 @@ enum Element
 
 class Monster
 {
-	char life;
 	const char healQuantity = 5;
+	char life;
 
 	Element element;
 	Element weakness;
@@ -24,6 +24,7 @@ public:
 	
 	Monster();
 	Monster(const Element& elem);
+	Monster(const Element& elem, const char l);
 	Monster(const Monster& m);
 	Monster& operator=(Monster other);
 

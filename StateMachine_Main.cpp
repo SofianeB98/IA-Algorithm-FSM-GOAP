@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "WorldMaster.h"
 #include "Monster.h"
 #include "StateMachine.h"
 
@@ -7,66 +8,41 @@ using namespace StateMachine;
 
 int main()
 {
+	int choosenMonsterElement = 1;
+	
 	std::cout << "Choose your monster's element \n";
 	std::cout << "1 - FIRE \n";
 	std::cout << "2 - WATER \n";
 	std::cout << "3 - GRASS" << std::endl;
-
-	int element;
 	
-	std::cin >> element;
+	std::cin >> choosenMonsterElement;
 	
-	Monster monsterA;
+	WorldMaster world;
 	//Create IA player monster
-	switch (element)
+	switch (choosenMonsterElement)
 	{
 	default:
-	case Element::FIRE:
-		monsterA = Monster(Element::FIRE);
+	case 1:
+		world.monsterPlayer = new Monster(Element::FIRE);
+		std::cout << "You've choosen FIRE !! This is so Hot !";
 		break;
 		
-	case Element::WATER:
-		monsterA = Monster(Element::WATER);
+	case 2:
+		world.monsterPlayer = new Monster(Element::WATER);
+		std::cout << "You've choosen WATER !! You're Aquaman !!";
 		break;
 
-	case Element::GRASS:
-		monsterA = Monster(Element::GRASS);
+	case 3:
+		world.monsterPlayer = new Monster(Element::GRASS);
+		std::cout << "You've choosen GRASS !! It's so Ecologic, Vegan !";
 		break;
 	}
 
+	world.StartWorld();
+
+	world.UpdateWorld();
 	
-	//StateMachineBase monsterA;
-	//StateMachineBase monsterB;
-
-	//State* x;
-	//x->AddTransition(nullptr);
+	world.DeleteWorld();
 	
-	//while (true)
-	{
-		//initialise monster B
-		//monsterB = StateMachineBase();
-
-		//Combat
-		while (true /*si a && b == en vie*/)
-		{
-			//while(true != false)
-			//	monsterA.ProcessState(/*me, other or fightdata ==> ref*/);
-			//wait
-
-//			monsterB.ProcessState(/*me, other or fightdata == ref*/);
-
-			//exit when a monster is not alive
-			break;
-		}
-
-		//if my monster die, exit loop
-
-		//else, heal
-		//break;
-	}
-	//exit when a.alive == false
-	
-	std::cout << "Your monster die ! " << std::endl;
-
 	return EXIT_SUCCESS;
 }

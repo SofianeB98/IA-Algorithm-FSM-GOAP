@@ -1,4 +1,5 @@
-﻿#pragma once
+﻿#ifndef _WORLDMASTER_HPP_
+#define _WORLDMASTER_HPP_
 
 class Monster;
 
@@ -11,6 +12,11 @@ public:
 	void StartWorld();
 	
 	void UpdateWorld();
-
+	void DeleteWorld();
 	
+private:
+	void ProcessBattle();
+
 };
+
+#endif

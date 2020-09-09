@@ -50,6 +50,7 @@ void StateMachine::State::AddTransition(BaseTransition* t)
 	this->Transitions.push_back(t);
 }
 
+
 void StateMachine::State::OnStateEnter()
 {
 	//process

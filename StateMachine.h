@@ -2,11 +2,12 @@
 #include <vector>
 
 class FightData;
-class BaseTransition;
 class Monster;
 
 namespace StateMachine
 {	
+	class BaseTransition;
+
 	class State
 	{
 	public:
