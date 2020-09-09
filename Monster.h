@@ -31,6 +31,7 @@ public:
 	~Monster();
 	
 	void takeDamage(char val, Element attackElement);
+	void heal();
 	bool isAlive();
 
 private:

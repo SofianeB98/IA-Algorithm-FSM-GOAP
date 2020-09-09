@@ -14,9 +14,10 @@ public:
 	void UpdateWorld();
 	void DeleteWorld();
 	
+	void waitForMilliseconds(int milli);
+	
 private:
 	void ProcessBattle();
-	void waitForMilliseconds(int milli);
 };
 
 #endif
