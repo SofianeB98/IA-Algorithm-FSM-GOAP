@@ -87,9 +87,30 @@ Element Monster::getElement() const
 	return this->element;
 }
 
+Element Monster::getWeakness() const
+{
+	return this->weakness;
+}
+
+
 void Monster::heal()
 {
 	this->life += healQuantity;
+}
+
+void Monster::CreateStateMachine()
+{
+	this->machine = new StateMachine::StateMachineBase();
+}
+
+bool Monster::isMonsterTurn() const
+{
+	return this->isTurn;
+}
+
+void Monster::setMonsterTurn(bool val)
+{
+	this->isTurn = val;
 }
 
 

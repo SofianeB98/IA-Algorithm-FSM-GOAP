@@ -13,6 +13,8 @@ enum Element
 
 class Monster
 {
+	bool isTurn = false;
+	
 	const char healQuantity = 5;
 	char life;
 
@@ -20,7 +22,7 @@ class Monster
 	Element weakness;
 	
 public:
-	StateMachine::StateMachineBase* machine = new StateMachine::StateMachineBase();
+	StateMachine::StateMachineBase* machine;
 	
 	Monster();
 	Monster(const Element& elem);
@@ -29,12 +31,19 @@ public:
 	Monster& operator=(Monster other);
 
 	~Monster();
+
+	void CreateStateMachine();
 	
 	void takeDamage(char val, Element attackElement);
 	void heal();
+	
 	bool isAlive();
 	char getLife() const;
-	Element getElement()const;
+	Element getElement() const;
+	Element getWeakness() const;
+
+	bool isMonsterTurn() const;
+	void setMonsterTurn(bool val);
 	
 private:
 	void swap(Monster& m);

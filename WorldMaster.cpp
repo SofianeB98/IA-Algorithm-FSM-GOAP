@@ -75,9 +75,8 @@ void WorldMaster::ProcessBattle()
 		//Init turn state ?
 		//While is monster turn
 		//-Process State
-
-		while (monsterPlayer->isAlive())
-			monsterPlayer->machine->getCurrentState(/*&monsterPlayer, &monsterRandom*/);
+		while(monsterPlayer->getLife() > 6)
+			monsterPlayer->machine->ProcessState(*monsterPlayer, *monsterRandom);
 		
 		std::cout << "wait";
 		
@@ -93,7 +92,7 @@ void WorldMaster::ProcessBattle()
 		//While is monster turn
 		//-Process State
 		while (monsterRandom->isAlive())
-			monsterRandom->machine->getCurrentState(/*&monsterRandom, &monsterPlayer*/);
+			monsterRandom->machine->ProcessState(*monsterRandom, *monsterPlayer);
 		
 		monsterRandom->takeDamage(100, Element::NEUTRAL);
 		
@@ -102,9 +101,6 @@ void WorldMaster::ProcessBattle()
 
 void WorldMaster::DeleteWorld()
 {
-	if(monsterPlayer)
-		delete monsterPlayer;
-
-	if(monsterRandom)
-		delete monsterRandom;
+	delete monsterPlayer;
+	delete monsterRandom;
 }
