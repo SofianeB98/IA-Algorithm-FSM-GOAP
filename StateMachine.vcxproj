@@ -145,6 +145,7 @@
     <ClCompile Include="WorldMaster.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="mathutils.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="StateMachine.h" />
     <ClInclude Include="WorldMaster.h" />

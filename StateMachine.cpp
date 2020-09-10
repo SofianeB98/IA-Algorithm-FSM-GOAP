@@ -64,7 +64,7 @@ StateMachine::State::~State()
 
 #pragma region Life Condition
 
-StateMachine::LifeConditionTransition::LifeConditionTransition(State* endState, bool greater, bool isTargetMine, char life) 
+
 StateMachine::BaseTransition::BaseTransition(State* end)
 {
 	
@@ -81,7 +81,7 @@ bool StateMachine::BaseTransition::Process(const Monster& mine, Monster& oth)
 }
 
 
-StateMachine::LifeConditionTransition::LifeConditionTransition(State* endState, bool greater, char life) 
+StateMachine::LifeConditionTransition::LifeConditionTransition(State* endState, bool greater, bool isTargetMine, char life)
 {
 	this->end = endState;
 	this->greater = greater;
