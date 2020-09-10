@@ -12,14 +12,14 @@ StateMachine::State* StateMachine::StateMachineBase::getCurrentState() const
 	return this->currentState;
 }
 
-void StateMachine::StateMachineBase::ChangeState(State* targetState)
+void StateMachine::StateMachineBase::ChangeState(State* targetState, const Monster& mine, Monster& oth)
 {
 	//State* prevState = this->currentState;
 
 	//this->currentState = nullptr;
 	this->currentState = targetState;
 
-	this->currentState->OnStateEnter();
+	this->currentState->OnStateEnter(mine, oth);
 	
 	//delete prevState;
 }
@@ -33,7 +33,7 @@ void StateMachine::StateMachineBase::ProcessState(const Monster& mine, Monster& 
 	{
 		if (currentState->Transitions[i]->ProcessTransition(mine, oth))
 		{
-			ChangeState(currentState->Transitions[i]->GetEndState());
+			ChangeState(currentState->Transitions[i]->GetEndState(), mine, oth);
 			break;
 		}
 	}
@@ -61,32 +61,34 @@ StateMachine::State::~State()
 			delete transition;
 	}
 }
-void StateMachine::State::OnStateEnter()
+void StateMachine::State::OnStateEnter(const Monster& mine, Monster& oth)
 {
 	
 }
 
-void StateMachine::AttackState::OnStateEnter()
+void StateMachine::AttackState::OnStateEnter(const Monster& mine, Monster& oth)
 {
 	
 }
 
-void StateMachine::BeginTurnState::OnStateEnter()
+void StateMachine::BeginTurnState::OnStateEnter(const Monster& mine, Monster& oth)
 {
 	
 }
 
-void StateMachine::ElementAttackState::OnStateEnter()
+void StateMachine::ElementAttackState::OnStateEnter(const Monster& mine, Monster& oth)
+{
+	oth.takeDamage(10, mine.getElement());
+
+	mine.machine->ProcessState(mine, oth);
+}
+
+void StateMachine::EscapeState::OnStateEnter(const Monster& mine, Monster& oth)
 {
 	
 }
 
-void StateMachine::EscapeState::OnStateEnter()
-{
-	
-}
-
-void StateMachine::NormalAttackState::OnStateEnter()
+void StateMachine::NormalAttackState::OnStateEnter(const Monster& mine, Monster& oth)
 {
 	
 }

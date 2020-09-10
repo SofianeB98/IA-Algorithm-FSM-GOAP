@@ -19,7 +19,7 @@ namespace StateMachine
 
 		virtual ~State();
 		
-		virtual void OnStateEnter() = 0;
+		virtual void OnStateEnter(const Monster& mine, Monster& oth) = 0;
 	};
 	
 #pragma region Default State
@@ -32,7 +32,7 @@ namespace StateMachine
 	public:
 		AttackState() = default;
 		
-		virtual void OnStateEnter() override;
+		virtual void OnStateEnter(const Monster& mine, Monster& oth) override;
 	};
 
 	class ElementAttackState : public AttackState
@@ -40,7 +40,7 @@ namespace StateMachine
 	public:
 		ElementAttackState();
 
-		virtual void OnStateEnter();
+		virtual void OnStateEnter(const Monster& mine, Monster& oth) override;
 	};
 
 	class NormalAttackState : public AttackState
@@ -48,7 +48,7 @@ namespace StateMachine
 	public:
 		NormalAttackState();
 
-		virtual void OnStateEnter();
+		virtual void OnStateEnter(const Monster& mine, Monster& oth) override;
 	};
 #pragma endregion 
 
@@ -58,7 +58,7 @@ namespace StateMachine
 	public:
 		EscapeState() = default;
 
-		virtual void OnStateEnter() override;
+		virtual void OnStateEnter(const Monster& mine, Monster& oth) override;
 	};
 #pragma endregion 
 
@@ -67,7 +67,7 @@ namespace StateMachine
 	{
 	public:
 		BeginTurnState() = default;
-		virtual void OnStateEnter() override;
+		virtual void OnStateEnter(const Monster& mine, Monster& oth) override;
 	};
 #pragma endregion
 
@@ -87,7 +87,7 @@ namespace StateMachine
 		}
 		
 		void ProcessState(const Monster& mine, Monster& oth);
-		void ChangeState(State* targetState);
+		void ChangeState(State* targetState, const Monster& mine, Monster& oth);
 		
 		State* getCurrentState() const;
 	};
