@@ -139,7 +139,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Action.cpp" />
+    <ClCompile Include="GameMaster.cpp" />
+    <ClCompile Include="GameState.cpp" />
     <ClCompile Include="GOAP.cpp" />
+    <ClCompile Include="GOAPPlanner.cpp" />
+    <ClCompile Include="Precondition.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Action.h" />
+    <ClInclude Include="GameMaster.h" />
+    <ClInclude Include="GameState.h" />
+    <ClInclude Include="GOAPPlanner.h" />
+    <ClInclude Include="Precondition.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -96,7 +96,7 @@ namespace StateMachine
 
 		void SetInitialState(State* st);
 		
-		State* getCurrentState() const;
+		const State* getCurrentState() const;
 	};
 
 #pragma region TRANSITION CLASS

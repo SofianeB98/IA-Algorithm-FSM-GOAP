@@ -9,7 +9,7 @@ StateMachine::StateMachineBase::StateMachineBase()
 	this->currentState = nullptr;
 }
 
-StateMachine::State* StateMachine::StateMachineBase::getCurrentState() const
+const StateMachine::State* StateMachine::StateMachineBase::getCurrentState() const
 {
 	return this->currentState;
 }
