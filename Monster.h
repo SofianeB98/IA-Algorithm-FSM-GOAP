@@ -20,7 +20,7 @@ class Monster
 	Element weakness;
 	
 public:
-	const StateMachine::StateMachineBase* machine = new const StateMachine::StateMachineBase();
+	StateMachine::StateMachineBase* machine = new StateMachine::StateMachineBase();
 	
 	Monster();
 	Monster(const Element& elem);

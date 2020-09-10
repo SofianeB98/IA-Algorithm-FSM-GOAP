@@ -55,7 +55,7 @@ namespace StateMachine
 
 		}
 		BaseTransition(State* end);
-		virtual bool Process(const WorldMaster& fightData) = 0;
+		virtual bool Process(const Monster& mine, Monster& oth) = 0;
 	};
 
 	class LifeConditionTransition : BaseTransition
@@ -64,7 +64,7 @@ namespace StateMachine
 
 		LifeConditionTransition(State* endState, bool greater, char life);
 
-		virtual bool Process(const WorldMaster& fightData);
+		virtual bool Process(const Monster& mine, Monster& oth);
 
 	private:
 		bool greater;
