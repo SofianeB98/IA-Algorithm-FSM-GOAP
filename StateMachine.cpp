@@ -24,6 +24,7 @@ void StateMachine::StateMachineBase::ChangeState(State* targetState)
 	//delete prevState;
 }
 
+
 void StateMachine::StateMachineBase::ProcessState(const Monster& mine, Monster& oth)
 {
 	return;
@@ -135,4 +136,14 @@ bool StateMachine::UseNeutralTransition::Process(const Monster& mine, Monster& o
 }
 #pragma endregion
 
+bool StateMachine::IsOpponentMyWeaknessTransition::Process(const Monster& mine, Monster& oth)
+{
+	if (mine.getWeakness() == oth.getElement())
+		return true;
+	return false;
+}
 
+bool StateMachine::EmptyTransition::Process(const Monster& mine, Monster& oth)
+{
+	return true;
+}

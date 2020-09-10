@@ -1,4 +1,6 @@
 ﻿#include "Monster.h"
+#include "StateMachine.h"
+using namespace StateMachine;
 
 #include "mathutils.h"
 
@@ -107,6 +109,33 @@ void Monster::heal()
 void Monster::CreateStateMachine()
 {
 	this->machine = new StateMachine::StateMachineBase();
+
+	State* beginState = new StateMachine::BeginTurnState();
+	State* escapeState = new StateMachine::EscapeState();
+	State* attackState = new AttackState();
+	State* elementalAttackState = new ElementAttackState();
+	State* normalAttackState = new NormalAttackState();
+	
+	BaseTransition* beginToEscapeLife = new LifeConditionTransition(escapeState, false, true, 10);
+	BaseTransition* beginToEscapeWeakness = new IsOpponentMyWeaknessTransition(escapeState);
+	
+	BaseTransition* beginToAttack = new LifeConditionTransition(attackState, true, true, 10);
+
+	beginState->AddTransition(beginToEscapeLife);
+	beginState->AddTransition(beginToEscapeWeakness);
+	beginState->AddTransition(beginToAttack);
+
+	BaseTransition* elementalAttackTransition = new UseElementalTransition(elementalAttackState);
+	BaseTransition* normalAttackTransition = new UseNeutralTransition(normalAttackState);
+
+	attackState->AddTransition(elementalAttackTransition);
+	attackState->AddTransition(normalAttackTransition);
+
+	BaseTransition* attackToBegin = new EmptyTransition(beginState);
+	
+	machine->ChangeState(beginState);
+
+
 }
 
 bool Monster::isMonsterTurn() const

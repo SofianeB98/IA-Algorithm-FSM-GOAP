@@ -32,7 +32,7 @@ namespace StateMachine
 	public:
 		AttackState();
 		
-		virtual void OnStateEnter() = 0;
+		virtual void OnStateEnter();
 	};
 
 	class ElementAttackState : public AttackState
@@ -40,7 +40,7 @@ namespace StateMachine
 	public:
 		ElementAttackState();
 
-		virtual void OnStateEnter() = 0;
+		virtual void OnStateEnter();
 	};
 
 	class NormalAttackState : public AttackState
@@ -48,7 +48,7 @@ namespace StateMachine
 	public:
 		NormalAttackState();
 
-		virtual void OnStateEnter() = 0;
+		virtual void OnStateEnter();
 	};
 #pragma endregion 
 
@@ -58,10 +58,19 @@ namespace StateMachine
 	public:
 		EscapeState();
 
-		virtual void OnStateEnter() = 0;
+		virtual void OnStateEnter();
 	};
 #pragma endregion 
-	
+
+#pragma region Begin State
+	class BeginTurnState : public State
+	{
+	public:
+		BeginTurnState();
+		virtual void OnStateEnter();
+	};
+#pragma endregion
+
 #pragma endregion 
 	
 	class StateMachineBase
@@ -96,7 +105,7 @@ namespace StateMachine
 		virtual bool Process(const Monster& mine, Monster& oth) = 0;
 	};
 
-	class LifeConditionTransition : BaseTransition
+	class LifeConditionTransition : public BaseTransition
 	{
 	public:	
 
@@ -110,19 +119,34 @@ namespace StateMachine
 		char life;
 	};
 
-	class UseElementalTransition : BaseTransition 
+	class UseElementalTransition : public BaseTransition 
 	{
 		UseElementalTransition();
 
 		virtual bool Process(const Monster& mine, Monster& oth);
 	};
 
-	class UseNeutralTransition : BaseTransition
+	class UseNeutralTransition : public BaseTransition
 	{
 		UseNeutralTransition();
 
 		virtual bool Process(const Monster& mine, Monster& oth);
 	};
+
+	class IsOpponentMyWeaknessTransition : public BaseTransition {
+	public:
+		IsOpponentMyWeaknessTransition(State* endState);
+
+		virtual bool Process(const Monster& mine, Monster& oth);
+	};
+
+	class EmptyTransition : public BaseTransition {
+	public:
+		EmptyTransition(State* endState);
+
+		virtual bool Process(const Monster& mine, Monster& oth);
+	};
+#pragma endregion 
 #pragma endregion
 
 	class PairTransitionToState

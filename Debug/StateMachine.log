@@ -1,0 +1,16 @@
+﻿  Monster.cpp
+D:\Repos\StateMachine_CPP\Monster.cpp(105,1): error C2059: erreur de syntaxe : '}'
+D:\Repos\StateMachine_CPP\Monster.cpp(107,28): error C2228: la partie gauche de '.isMonsterTurn' doit avoir un class/struct/union
+D:\Repos\StateMachine_CPP\Monster.cpp(125,27): warning C4244: '-=' : conversion de 'float' en 'char', perte possible de données
+  StateMachine.cpp
+D:\Repos\StateMachine_CPP\StateMachine.cpp(11,66): error C2512: 'StateMachine::UseElementalTransition::UseElementalTransition' : aucun constructeur par défaut approprié disponible
+D:\Repos\StateMachine_CPP\StateMachine.cpp(33,1): error C2511: 'void StateMachine::StateMachineBase::ProcessState(void)' : impossible de trouver la fonction membre surchargée dans 'StateMachine::StateMachineBase'
+D:\Repos\StateMachine_CPP\StateMachine.h(67): message : voir la déclaration de 'StateMachine::StateMachineBase'
+D:\Repos\StateMachine_CPP\StateMachine.cpp(34,22): error C2671: 'StateMachine::StateMachineBase::ProcessState' : les fonctions membres static n'ont pas de pointeurs 'this'
+D:\Repos\StateMachine_CPP\StateMachine.cpp(50,1): error C2511: 'void StateMachine::State::AddTransition(const StateMachine::BaseTransition *)' : impossible de trouver la fonction membre surchargée dans 'StateMachine::State'
+D:\Repos\StateMachine_CPP\StateMachine.h(12): message : voir la déclaration de 'StateMachine::State'
+D:\Repos\StateMachine_CPP\StateMachine.cpp(51,2): error C2671: 'StateMachine::State::AddTransition' : les fonctions membres static n'ont pas de pointeurs 'this'
+  StateMachine_Main.cpp
+  WorldMaster.cpp
+D:\Repos\StateMachine_CPP\WorldMaster.cpp(31,13): warning C4244: 'argument' : conversion de 'time_t' en 'unsigned int', perte possible de données
+  Génération de code en cours...
