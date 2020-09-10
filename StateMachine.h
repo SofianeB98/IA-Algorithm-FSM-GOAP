@@ -99,13 +99,28 @@ namespace StateMachine
 	{
 	public:	
 
-		LifeConditionTransition(State* endState, bool greater, char life);
+		LifeConditionTransition(State* endState, bool greater, bool isTargetMine, char life);
 
 		virtual bool Process(const Monster& mine, Monster& oth);
 
 	private:
 		bool greater;
+		bool isTargetMine;
 		char life;
+	};
+
+	class UseElementalTransition : BaseTransition 
+	{
+		UseElementalTransition(State* endState);
+
+		virtual bool Process(const Monster& mine, Monster& oth);
+	};
+
+	class UseNeutralTransition : BaseTransition
+	{
+		UseNeutralTransition(State* endState);
+
+		virtual bool Process(const Monster& mine, Monster& oth);
 	};
 #pragma endregion 
 }
