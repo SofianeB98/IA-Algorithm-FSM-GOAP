@@ -14,14 +14,14 @@ StateMachine::State* StateMachine::StateMachineBase::getCurrentState() const
 
 void StateMachine::StateMachineBase::ChangeState(State* targetState)
 {
-	State* prevState = this->currentState;
+	//State* prevState = this->currentState;
 
-	this->currentState = nullptr;
+	//this->currentState = nullptr;
 	this->currentState = targetState;
 
 	this->currentState->OnStateEnter();
 	
-	delete prevState;
+	//delete prevState;
 }
 
 void StateMachine::StateMachineBase::ProcessState(const Monster& mine, Monster& oth)
@@ -30,9 +30,9 @@ void StateMachine::StateMachineBase::ProcessState(const Monster& mine, Monster& 
 	
 	for (int i = 0; i < this->currentState->Transitions.size(); ++i)
 	{
-		if (currentState->Transitions[i]->Process(mine, oth))
+		if (currentState->Transitions[i]->ProcessTransition(mine, oth))
 		{
-			ChangeState(currentState->Transitions[i]->end);
+			ChangeState(currentState->Transitions[i]->GetEndState());
 			break;
 		}
 	}
@@ -46,7 +46,7 @@ StateMachine::State::State()
 	this->Transitions.reserve(5);
 }
 
-void StateMachine::State::AddTransition(BaseTransition* t)
+void StateMachine::State::AddTransition(PairTransitionToState* t)
 {
 	this->Transitions.push_back(t);
 }
@@ -56,7 +56,8 @@ StateMachine::State::~State()
 {
 	for (auto& transition : Transitions)
 	{
-		delete transition;
+		if(transition != nullptr)
+			delete transition;
 	}
 }
 
@@ -72,7 +73,8 @@ StateMachine::BaseTransition::BaseTransition(State* end)
 
 StateMachine::BaseTransition::~BaseTransition()
 {
-	delete this->end;
+	if(this->end != nullptr)
+		delete this->end;
 }
 
 bool StateMachine::BaseTransition::Process(const Monster& mine, Monster& oth)
@@ -100,13 +102,11 @@ bool StateMachine::LifeConditionTransition::Process(const Monster& mine, Monster
 	if (this->greater)
 		if (target.getLife() >= this->life)
 			return true;
-		else
-			return false;
 	else
 		if (target.getLife() <= this->life)
 			return true;
-		else
-			return false;
+
+	return false;
 }
 
 #pragma endregion

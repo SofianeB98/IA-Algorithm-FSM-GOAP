@@ -5,17 +5,17 @@ class WorldMaster;
 class Monster;
 
 namespace StateMachine
-{	
-	class BaseTransition;
-
+{
+	class PairTransitionToState;
+	
 #pragma region STATE CLASS
 	class State
 	{
 	public:
-		std::vector<BaseTransition*> Transitions;
+		std::vector<PairTransitionToState*> Transitions;
 		
 		State();
-		void AddTransition(BaseTransition* t);
+		void AddTransition(PairTransitionToState* t);
 
 		virtual ~State();
 		
@@ -93,7 +93,7 @@ namespace StateMachine
 		}
 		BaseTransition(State* end);
 
-		~BaseTransition();
+		virtual ~BaseTransition();
 
 		virtual bool Process(const Monster& mine, Monster& oth) = 0;
 	};
@@ -125,5 +125,23 @@ namespace StateMachine
 
 		virtual bool Process(const Monster& mine, Monster& oth);
 	};
-#pragma endregion 
+#pragma endregion
+
+	class PairTransitionToState
+	{
+	private:
+		State* endState;
+		BaseTransition* transition;
+
+	public:
+		bool ProcessTransition(const Monster& mine, Monster& oth) const
+		{
+			return transition->Process(mine, oth);
+		};
+
+		State* GetEndState() const
+		{
+			return this->GetEndState();
+		}
+	};
 }

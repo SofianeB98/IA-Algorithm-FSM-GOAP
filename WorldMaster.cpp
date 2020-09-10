@@ -79,12 +79,12 @@ void WorldMaster::ProcessBattle()
 		//while(monsterPlayer->getLife() > 6)
 		monsterPlayer->machine->ProcessState(*monsterPlayer, *monsterRandom);
 		
-		std::cout << "wait";
+		std::cout << "End Player Monster Turn " << std::endl;
 		
 		//wait X milliseconds before execute the next
 		waitForMilliseconds(1000);
 
-		std::cout << "   after wait " << std::endl;
+		std::cout << " Begin  " << std::endl;
 
 		if (!monsterRandom->isAlive())
 			break;
@@ -102,6 +102,9 @@ void WorldMaster::ProcessBattle()
 
 void WorldMaster::DeleteWorld()
 {
-	delete monsterPlayer;
-	delete monsterRandom;
+	if(monsterPlayer != nullptr)
+		delete monsterPlayer;
+
+	if(monsterRandom != nullptr)
+		delete monsterRandom;
 }

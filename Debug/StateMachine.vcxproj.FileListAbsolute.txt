@@ -1,2 +1,0 @@
-D:\Cours\ESGI_5_Master_3DJV\Algorithmes IA pour JV\StateMachine_CPP\Debug\StateMachine.exe
-D:\Cours\ESGI_5_Master_3DJV\Algorithmes IA pour JV\StateMachine_CPP\Debug\StateMachine.pdb

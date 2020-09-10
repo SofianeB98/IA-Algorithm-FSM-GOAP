@@ -1,5 +1,7 @@
 ﻿#include "Monster.h"
 
+#include "mathutils.h"
+
 Monster::Monster()
 {
 	this->life = 100;
@@ -74,7 +76,8 @@ void Monster::swap(Monster& m)
 
 Monster::~Monster()
 {
-	delete this->machine;
+	if(this->machine != nullptr)
+		delete this->machine;
 }
 
 char Monster::getLife() const
@@ -119,12 +122,16 @@ void Monster::setMonsterTurn(bool val)
 
 void Monster::takeDamage(char val, Element attackElement)
 {
+	char damage = 0;
+	
 	if (attackElement == this->weakness)
-		this->life -= val * 2;
+		damage = clamp(val * 2, 0, 100);
 	else if (attackElement == Element::NEUTRAL || attackElement == this->element)
-		this->life -= val;
+		damage = clamp(val * 1, 0, 100);
 	else
-		this->life -= val * 0.5f;
+		damage = clamp(val * 0.5f, 0.0f, 100.0f);;
+
+	this->life -= static_cast<char>(damage);
 }
 
 bool Monster::isAlive()
