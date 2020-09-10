@@ -77,6 +77,21 @@ Monster::~Monster()
 	delete this->machine;
 }
 
+char Monster::getLife() const
+{
+	return this->life;
+}
+
+Element Monster::getElement() const
+{
+	return this->element;
+}
+
+void Monster::heal()
+{
+	this->life += healQuantity;
+}
+
 
 void Monster::takeDamage(char val, Element attackElement)
 {

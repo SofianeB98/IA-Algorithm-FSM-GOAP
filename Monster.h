@@ -33,7 +33,9 @@ public:
 	void takeDamage(char val, Element attackElement);
 	void heal();
 	bool isAlive();
-
+	char getLife() const;
+	Element getElement()const;
+	
 private:
 	void swap(Monster& m);
 	
