@@ -2,14 +2,15 @@
 
 #include "Monster.h"
 #include <iostream>
-#include <time.h>
+#include <ctime>
 
 void WorldMaster::waitForMilliseconds(int milli)
 {
 	// Cross-platform sleep function
 	clock_t end_time;
 	end_time = clock() + milli * CLOCKS_PER_SEC / 1000;
-	while (clock() < end_time) {
+	while (clock() < end_time) 
+	{
 		//blank loop for waiting
 	}
 }
@@ -47,16 +48,19 @@ void WorldMaster::UpdateWorld()
 			elem = Element::GRASS;
 			break;
 		}
-		
-		//delete monsterRandom;
+
 		monsterRandom = new Monster(elem, rdmLife);
 		std::cout << (int)rdmLife << " Monster life "<< std::endl;
 		
 		//battle
 		ProcessBattle();
+
+		delete monsterRandom;
 	}
 
 	std::cout << "Your monster die ! " << std::endl;
+
+	
 }
 
 void WorldMaster::ProcessBattle()
@@ -93,6 +97,9 @@ void WorldMaster::ProcessBattle()
 
 void WorldMaster::DeleteWorld()
 {
-	delete monsterPlayer;
-	delete monsterRandom;
+	if(monsterPlayer)
+		delete monsterPlayer;
+
+	if(monsterRandom)
+		delete monsterRandom;
 }
