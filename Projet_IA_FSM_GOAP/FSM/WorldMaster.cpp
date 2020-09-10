@@ -85,15 +85,14 @@ void WorldMaster::ProcessBattle()
 	{
 		if (WorldMaster::escape)
 			break;
-		
-		int i = 0;
-		std::cin >> i;
-		
+	
 		if (!monsterPlayer->isAlive())
 		{
 			std::cout << "Player Monster Die\n" << std::endl;
 			break;
 		}
+
+		std::cin.get();
 		
 		std::cout << "Begin Player Monster Turn \n";
 		

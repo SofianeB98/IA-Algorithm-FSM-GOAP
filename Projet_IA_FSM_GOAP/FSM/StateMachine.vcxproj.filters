@@ -35,10 +35,10 @@
     <ClInclude Include="Monster.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="WorldMaster.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
     <ClInclude Include="mathutils.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldMaster.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
