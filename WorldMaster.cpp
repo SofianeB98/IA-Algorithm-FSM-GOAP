@@ -17,7 +17,7 @@ void WorldMaster::waitForMilliseconds(int milli)
 
 void WorldMaster::StartWorld()
 {
-	
+	monsterPlayer->CreateStateMachine();
 }
 
 void WorldMaster::UpdateWorld()
@@ -25,7 +25,7 @@ void WorldMaster::UpdateWorld()
 	while(monsterPlayer->isAlive())
 	{
 		//heal
-		//monsterPlayer->heal();
+		monsterPlayer->heal();
 		
 		//generate new monster Random (life + element)
 		srand(time(NULL));
@@ -50,6 +50,7 @@ void WorldMaster::UpdateWorld()
 		}
 
 		monsterRandom = new Monster(elem, rdmLife);
+		monsterRandom->CreateStateMachine();
 		std::cout << (int)rdmLife << " Monster life "<< std::endl;
 		
 		//battle
@@ -75,8 +76,8 @@ void WorldMaster::ProcessBattle()
 		//Init turn state ?
 		//While is monster turn
 		//-Process State
-		while(monsterPlayer->getLife() > 6)
-			monsterPlayer->machine->ProcessState(*monsterPlayer, *monsterRandom);
+		//while(monsterPlayer->getLife() > 6)
+		monsterPlayer->machine->ProcessState(*monsterPlayer, *monsterRandom);
 		
 		std::cout << "wait";
 		
@@ -91,8 +92,8 @@ void WorldMaster::ProcessBattle()
 		//Init turn state ?
 		//While is monster turn
 		//-Process State
-		while (monsterRandom->isAlive())
-			monsterRandom->machine->ProcessState(*monsterRandom, *monsterPlayer);
+		//while (monsterRandom->isAlive())
+		monsterRandom->machine->ProcessState(*monsterRandom, *monsterPlayer);
 		
 		monsterRandom->takeDamage(100, Element::NEUTRAL);
 		

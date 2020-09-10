@@ -92,6 +92,9 @@ namespace StateMachine
 
 		}
 		BaseTransition(State* end);
+
+		~BaseTransition();
+
 		virtual bool Process(const Monster& mine, Monster& oth) = 0;
 	};
 

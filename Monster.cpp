@@ -95,6 +95,9 @@ Element Monster::getWeakness() const
 
 void Monster::heal()
 {
+	if (this->life >= 100)
+		return;
+	
 	this->life += healQuantity;
 }
 
