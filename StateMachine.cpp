@@ -69,7 +69,7 @@ StateMachine::LifeConditionTransition::LifeConditionTransition(State* endState, 
 	this->life = life;
 }
 
-bool StateMachine::LifeConditionTransition::Process(const Monster& mine, const Monster& oth)
+bool StateMachine::LifeConditionTransition::Process(const Monster& mine, Monster& oth)
 {
 	return false;
 }
