@@ -87,11 +87,9 @@ namespace StateMachine
 	class BaseTransition
 	{
 	public:
-		State* end;
 		BaseTransition() {
 
 		}
-		BaseTransition(State* end);
 
 		virtual ~BaseTransition();
 
@@ -102,7 +100,7 @@ namespace StateMachine
 	{
 	public:	
 
-		LifeConditionTransition(State* endState, bool greater, bool isTargetMine, char life);
+		LifeConditionTransition(bool greater, bool isTargetMine, char life);
 
 		virtual bool Process(const Monster& mine, Monster& oth);
 
@@ -114,14 +112,14 @@ namespace StateMachine
 
 	class UseElementalTransition : BaseTransition 
 	{
-		UseElementalTransition(State* endState);
+		UseElementalTransition();
 
 		virtual bool Process(const Monster& mine, Monster& oth);
 	};
 
 	class UseNeutralTransition : BaseTransition
 	{
-		UseNeutralTransition(State* endState);
+		UseNeutralTransition();
 
 		virtual bool Process(const Monster& mine, Monster& oth);
 	};
