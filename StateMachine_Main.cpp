@@ -37,7 +37,7 @@ int main()
 		std::cout << "You've choosen GRASS !! It's so Ecologic, Vegan !" << std::endl;
 		break;
 	}
-
+	
 	world.StartWorld();
 
 	world.UpdateWorld();

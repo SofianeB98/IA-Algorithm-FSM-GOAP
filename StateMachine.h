@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <iostream>
 #include <vector>
 
 class WorldMaster;
@@ -12,7 +13,7 @@ namespace StateMachine
 	class State
 	{
 	public:
-		std::vector<PairTransitionToState*> Transitions;
+		std::vector<const PairTransitionToState*> Transitions;
 		
 		State();
 		void AddTransition(PairTransitionToState* t);
@@ -38,7 +39,7 @@ namespace StateMachine
 	class ElementAttackState : public AttackState
 	{
 	public:
-		ElementAttackState();
+		ElementAttackState() = default;
 
 		virtual void OnStateEnter(const Monster& mine, Monster& oth) override;
 	};
@@ -46,7 +47,7 @@ namespace StateMachine
 	class NormalAttackState : public AttackState
 	{
 	public:
-		NormalAttackState();
+		NormalAttackState() = default;
 
 		virtual void OnStateEnter(const Monster& mine, Monster& oth) override;
 	};
@@ -83,11 +84,17 @@ namespace StateMachine
 
 		~StateMachineBase()
 		{
-			delete currentState;
+			if (currentState != nullptr)
+			{
+				delete currentState;
+				currentState = nullptr;
+			}
 		}
 		
 		void ProcessState(const Monster& mine, Monster& oth);
 		void ChangeState(State* targetState, const Monster& mine, Monster& oth);
+
+		void SetInitialState(State* st);
 		
 		State* getCurrentState() const;
 	};
@@ -117,8 +124,21 @@ namespace StateMachine
 		char life;
 	};
 
+	class LifeConditionAndWeaknessTransition : public BaseTransition
+	{
+	public:	
+
+		LifeConditionAndWeaknessTransition(char life);
+
+		virtual bool Process(const Monster& mine, Monster& oth);
+
+	private:
+		char life;
+	};
+
 	class UseElementalTransition : public BaseTransition 
 	{
+	public:
 		UseElementalTransition();
 
 		virtual bool Process(const Monster& mine, Monster& oth);
@@ -126,6 +146,7 @@ namespace StateMachine
 
 	class UseNeutralTransition : public BaseTransition
 	{
+	public:
 		UseNeutralTransition();
 
 		virtual bool Process(const Monster& mine, Monster& oth);
@@ -167,7 +188,7 @@ namespace StateMachine
 
 		State* GetEndState() const
 		{
-			return this->GetEndState();
+			return this->endState;
 		}
 	};
 }

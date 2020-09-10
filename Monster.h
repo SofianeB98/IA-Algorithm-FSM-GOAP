@@ -44,6 +44,8 @@ public:
 
 	bool isMonsterTurn() const;
 	void setMonsterTurn(bool val);
+
+	bool tryExit() const;
 	
 private:
 	void swap(Monster& m);

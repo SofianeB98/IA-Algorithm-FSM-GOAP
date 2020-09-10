@@ -1,4 +1,7 @@
 ﻿#include "Monster.h"
+
+#include <ctime>
+
 #include "StateMachine.h"
 using namespace StateMachine;
 
@@ -78,8 +81,11 @@ void Monster::swap(Monster& m)
 
 Monster::~Monster()
 {
-	if(this->machine != nullptr)
+	if (this->machine != nullptr)
+	{
 		delete this->machine;
+		machine = nullptr;
+	}
 }
 
 char Monster::getLife() const
@@ -102,7 +108,7 @@ void Monster::heal()
 {
 	if (this->life >= 100)
 		return;
-	
+
 	this->life += healQuantity;
 }
 
@@ -111,31 +117,60 @@ void Monster::CreateStateMachine()
 	this->machine = new StateMachine::StateMachineBase();
 
 	State* beginState = new StateMachine::BeginTurnState();
-	//State* escapeState = new StateMachine::EscapeState();
+	State* escapeState = new StateMachine::EscapeState();
 	State* attackState = new AttackState();
-	//State* elementalAttackState = new ElementAttackState();
-	//State* normalAttackState = new NormalAttackState();
+	State* elementalAttackState = new ElementAttackState();
+	State* normalAttackState = new NormalAttackState();
 
-	BaseTransition* b = new IsOpponentMyWeaknessTransition();
-	
-	//BaseTransition* beginToEscapeLife = new LifeConditionTransition(escapeState, false, true, 10);
-	//BaseTransition* beginToEscapeWeakness = new IsOpponentMyWeaknessTransition(escapeState);
-	
-	//BaseTransition* beginToAttack = new LifeConditionTransition(attackState, true, true, 10);
+	// Begin to Escape
+		// Weakness
+	//BaseTransition* beginToEscapeWeakness = new IsOpponentMyWeaknessTransition();
+	//PairTransitionToState* beginToEscapeWeaknessPair = new PairTransitionToState(escapeState, beginToEscapeWeakness);
+	//beginState->AddTransition(beginToEscapeWeaknessPair);
+	// Life < 10
+	BaseTransition* beginToEscapeLife = new LifeConditionTransition(false, true, 10);
+	PairTransitionToState* beginToEscapeLifePair = new PairTransitionToState(escapeState, beginToEscapeLife);
+	beginState->AddTransition(beginToEscapeLifePair);
 
-	//beginState->AddTransition(beginToEscapeLife);
-	//beginState->AddTransition(beginToEscapeWeakness);
-	//beginState->AddTransition(beginToAttack);
+	BaseTransition* beginToEscapeLifeAndWeakness = new LifeConditionAndWeaknessTransition(50);
+	PairTransitionToState* beginToEscapeLifeAndWeaknessPair = new PairTransitionToState(escapeState, beginToEscapeLifeAndWeakness);
+	beginState->AddTransition(beginToEscapeLifeAndWeaknessPair);
 
-	//BaseTransition* elementalAttackTransition = new UseElementalTransition(elementalAttackState);
-	// normalAttackTransition = new UseNeutralTransition(normalAttackState);
 
-	//attackState->AddTransition(elementalAttackTransition);
-	//attackState->AddTransition(normalAttackTransition);
 
-	//BaseTransition* attackToBegin = new EmptyTransition(beginState);
-	
-//	machine->ChangeState(beginState);
+	// Begin to attack
+		// Life > 10
+	BaseTransition* beginToAttack = new LifeConditionTransition(true, true, 10);
+	PairTransitionToState* beginToAttackPair = new PairTransitionToState(attackState, beginToAttack);
+	beginState->AddTransition(beginToAttackPair);
+
+	//attack to elementalAtack
+		// UseElementalTransition
+	BaseTransition* attackToElemental = new UseElementalTransition();
+	PairTransitionToState* attackToElementalPair = new PairTransitionToState(elementalAttackState, attackToElemental);
+	attackState->AddTransition(attackToElementalPair);
+	// attack to neutral
+		// UseNeutral
+	BaseTransition* attackToNeutral = new UseNeutralTransition();
+	PairTransitionToState* attackToNeutralPair = new PairTransitionToState(normalAttackState, attackToNeutral);
+	attackState->AddTransition(attackToNeutralPair);
+
+	// Back to Begin
+	BaseTransition* neutralToBegin = new EmptyTransition();
+	PairTransitionToState* neutralToBeginPair = new PairTransitionToState(beginState, neutralToBegin);
+	normalAttackState->AddTransition(neutralToBeginPair);
+
+	BaseTransition* elementalToBegin = new EmptyTransition();
+	PairTransitionToState* elementalToBeginPair = new PairTransitionToState(beginState, elementalToBegin);
+	elementalAttackState->AddTransition(elementalToBeginPair);
+
+	// Escape to begin
+	BaseTransition* escapeToBegin = new EmptyTransition();
+	PairTransitionToState* escapeToBeginPair = new PairTransitionToState(beginState, escapeToBegin);
+	escapeState->AddTransition(escapeToBeginPair);
+
+	machine->SetInitialState(beginState);
+
 
 
 }
@@ -150,11 +185,24 @@ void Monster::setMonsterTurn(bool val)
 	this->isTurn = val;
 }
 
+bool Monster::tryExit() const
+{
+	srand(time(NULL));
+	const float rdmElem = (rand() % 100 + 1) * 0.01f;
+
+
+	if (rdmElem >= 0.75f)
+		return true;
+
+	return false;
+
+}
+
 
 void Monster::takeDamage(char val, Element attackElement)
 {
 	char damage = 0;
-	
+
 	if (attackElement == this->weakness)
 		damage = clamp(val * 2, 0, 100);
 	else if (attackElement == Element::NEUTRAL || attackElement == this->element)
