@@ -30,9 +30,9 @@ namespace StateMachine
 	class AttackState : public State
 	{
 	public:
-		AttackState();
+		AttackState() = default;
 		
-		virtual void OnStateEnter();
+		virtual void OnStateEnter() override;
 	};
 
 	class ElementAttackState : public AttackState
@@ -56,9 +56,9 @@ namespace StateMachine
 	class EscapeState : public State
 	{
 	public:
-		EscapeState();
+		EscapeState() = default;
 
-		virtual void OnStateEnter();
+		virtual void OnStateEnter() override;
 	};
 #pragma endregion 
 
@@ -66,8 +66,8 @@ namespace StateMachine
 	class BeginTurnState : public State
 	{
 	public:
-		BeginTurnState();
-		virtual void OnStateEnter();
+		BeginTurnState() = default;
+		virtual void OnStateEnter() override;
 	};
 #pragma endregion
 
@@ -133,14 +133,14 @@ namespace StateMachine
 
 	class IsOpponentMyWeaknessTransition : public BaseTransition {
 	public:
-		IsOpponentMyWeaknessTransition();
+		IsOpponentMyWeaknessTransition() = default;
 
 		virtual bool Process(const Monster& mine, Monster& oth);
 	};
 
 	class EmptyTransition : public BaseTransition {
 	public:
-		EmptyTransition();
+		EmptyTransition() = default;
 
 		virtual bool Process(const Monster& mine, Monster& oth);
 	};

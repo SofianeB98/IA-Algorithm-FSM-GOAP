@@ -111,13 +111,12 @@ void Monster::CreateStateMachine()
 	this->machine = new StateMachine::StateMachineBase();
 
 	State* beginState = new StateMachine::BeginTurnState();
-	State* escapeState = new StateMachine::EscapeState();
+	//State* escapeState = new StateMachine::EscapeState();
 	State* attackState = new AttackState();
-	State* elementalAttackState = new ElementAttackState();
-	State* normalAttackState = new NormalAttackState();
+	//State* elementalAttackState = new ElementAttackState();
+	//State* normalAttackState = new NormalAttackState();
 
 	BaseTransition* b = new IsOpponentMyWeaknessTransition();
-	PairTransitionToState* a = new PairTransitionToState(beginState, b);
 	
 	//BaseTransition* beginToEscapeLife = new LifeConditionTransition(escapeState, false, true, 10);
 	//BaseTransition* beginToEscapeWeakness = new IsOpponentMyWeaknessTransition(escapeState);
@@ -136,7 +135,7 @@ void Monster::CreateStateMachine()
 
 	//BaseTransition* attackToBegin = new EmptyTransition(beginState);
 	
-	machine->ChangeState(beginState);
+//	machine->ChangeState(beginState);
 
 
 }

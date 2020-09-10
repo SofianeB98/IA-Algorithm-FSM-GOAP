@@ -61,16 +61,40 @@ StateMachine::State::~State()
 			delete transition;
 	}
 }
+void StateMachine::State::OnStateEnter()
+{
+	
+}
+
+void StateMachine::AttackState::OnStateEnter()
+{
+	
+}
+
+void StateMachine::BeginTurnState::OnStateEnter()
+{
+	
+}
+
+void StateMachine::ElementAttackState::OnStateEnter()
+{
+	
+}
+
+void StateMachine::EscapeState::OnStateEnter()
+{
+	
+}
+
+void StateMachine::NormalAttackState::OnStateEnter()
+{
+	
+}
+
 
 #pragma endregion
 
 #pragma region Life Condition
-
-
-StateMachine::BaseTransition::BaseTransition()
-{
-	
-}
 
 StateMachine::BaseTransition::~BaseTransition()
 {
