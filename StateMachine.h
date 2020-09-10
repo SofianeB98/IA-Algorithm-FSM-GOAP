@@ -96,9 +96,7 @@ namespace StateMachine
 	class BaseTransition
 	{
 	public:
-		BaseTransition() {
-
-		}
+		BaseTransition() = default;
 
 		virtual ~BaseTransition();
 
@@ -135,14 +133,14 @@ namespace StateMachine
 
 	class IsOpponentMyWeaknessTransition : public BaseTransition {
 	public:
-		IsOpponentMyWeaknessTransition(State* endState);
+		IsOpponentMyWeaknessTransition();
 
 		virtual bool Process(const Monster& mine, Monster& oth);
 	};
 
 	class EmptyTransition : public BaseTransition {
 	public:
-		EmptyTransition(State* endState);
+		EmptyTransition();
 
 		virtual bool Process(const Monster& mine, Monster& oth);
 	};
@@ -156,6 +154,12 @@ namespace StateMachine
 		BaseTransition* transition;
 
 	public:
+		PairTransitionToState(State* state, BaseTransition* tr)
+		{
+			this->endState = state;
+			this->transition = tr;
+		};
+		
 		bool ProcessTransition(const Monster& mine, Monster& oth) const
 		{
 			return transition->Process(mine, oth);

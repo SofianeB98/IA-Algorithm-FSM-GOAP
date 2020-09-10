@@ -115,23 +115,26 @@ void Monster::CreateStateMachine()
 	State* attackState = new AttackState();
 	State* elementalAttackState = new ElementAttackState();
 	State* normalAttackState = new NormalAttackState();
+
+	BaseTransition* b = new IsOpponentMyWeaknessTransition();
+	PairTransitionToState* a = new PairTransitionToState(beginState, b);
 	
-	BaseTransition* beginToEscapeLife = new LifeConditionTransition(escapeState, false, true, 10);
-	BaseTransition* beginToEscapeWeakness = new IsOpponentMyWeaknessTransition(escapeState);
+	//BaseTransition* beginToEscapeLife = new LifeConditionTransition(escapeState, false, true, 10);
+	//BaseTransition* beginToEscapeWeakness = new IsOpponentMyWeaknessTransition(escapeState);
 	
-	BaseTransition* beginToAttack = new LifeConditionTransition(attackState, true, true, 10);
+	//BaseTransition* beginToAttack = new LifeConditionTransition(attackState, true, true, 10);
 
-	beginState->AddTransition(beginToEscapeLife);
-	beginState->AddTransition(beginToEscapeWeakness);
-	beginState->AddTransition(beginToAttack);
+	//beginState->AddTransition(beginToEscapeLife);
+	//beginState->AddTransition(beginToEscapeWeakness);
+	//beginState->AddTransition(beginToAttack);
 
-	BaseTransition* elementalAttackTransition = new UseElementalTransition(elementalAttackState);
-	BaseTransition* normalAttackTransition = new UseNeutralTransition(normalAttackState);
+	//BaseTransition* elementalAttackTransition = new UseElementalTransition(elementalAttackState);
+	// normalAttackTransition = new UseNeutralTransition(normalAttackState);
 
-	attackState->AddTransition(elementalAttackTransition);
-	attackState->AddTransition(normalAttackTransition);
+	//attackState->AddTransition(elementalAttackTransition);
+	//attackState->AddTransition(normalAttackTransition);
 
-	BaseTransition* attackToBegin = new EmptyTransition(beginState);
+	//BaseTransition* attackToBegin = new EmptyTransition(beginState);
 	
 	machine->ChangeState(beginState);
 

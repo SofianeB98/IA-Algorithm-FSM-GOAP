@@ -67,15 +67,13 @@ StateMachine::State::~State()
 #pragma region Life Condition
 
 
-StateMachine::BaseTransition::BaseTransition(State* end)
+StateMachine::BaseTransition::BaseTransition()
 {
 	
 }
 
 StateMachine::BaseTransition::~BaseTransition()
 {
-	if(this->end != nullptr)
-		delete this->end;
 }
 
 bool StateMachine::BaseTransition::Process(const Monster& mine, Monster& oth)
@@ -83,10 +81,8 @@ bool StateMachine::BaseTransition::Process(const Monster& mine, Monster& oth)
 	return false;
 }
 
-
-StateMachine::LifeConditionTransition::LifeConditionTransition(State* endState, bool greater, bool isTargetMine, char life)
+StateMachine::LifeConditionTransition::LifeConditionTransition( bool greater, bool isTargetMine, char life)
 {
-	this->end = endState;
 	this->greater = greater;
 	this->life = life;
 	this->isTargetMine = isTargetMine;
@@ -113,8 +109,7 @@ bool StateMachine::LifeConditionTransition::Process(const Monster& mine, Monster
 #pragma endregion
 
 #pragma region Use Elemental transition
-StateMachine::UseElementalTransition::UseElementalTransition(State* endState) {
-	this->end = endState;
+StateMachine::UseElementalTransition::UseElementalTransition() {
 }
 
 bool StateMachine::UseElementalTransition::Process(const Monster& mine, Monster& oth) {
@@ -125,8 +120,7 @@ bool StateMachine::UseElementalTransition::Process(const Monster& mine, Monster&
 #pragma endregion
 
 #pragma region Use Elemental transition
-StateMachine::UseNeutralTransition::UseNeutralTransition(State* endState) {
-	this->end = endState;
+StateMachine::UseNeutralTransition::UseNeutralTransition() {
 }
 
 bool StateMachine::UseNeutralTransition::Process(const Monster& mine, Monster& oth) {
