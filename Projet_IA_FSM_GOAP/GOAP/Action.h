@@ -30,7 +30,7 @@ public:
 	{
 		effectFunction = std::move(fctn);
 	}
-	ActionType getEffect() const
+	ActionType getEffectType() const
 	{
 		return this->effect;
 	}
@@ -47,7 +47,7 @@ public:
 	
 	~Precondition();
 
-	bool checkPreconditionOnGs(const GameState& gs)
+	bool checkPreconditionOnGs(const GameState& gs) const
 	{
 		return preconditionFunction(gs);
 	}
@@ -56,7 +56,7 @@ public:
 		preconditionFunction = std::move(fctn);
 	}
 	
-	bool checkPrecondition(ActionType c) const;
+	bool checkPrecondition(const ActionType c) const;
 	ActionType getPrecondition() const
 	{
 		return this->condition;
@@ -83,11 +83,11 @@ public:
 	
 	bool checkPreconditions(const Action& a) const;
 	
-	const std::vector<const Precondition* > getPreconditions() const
+	const Precondition* getPreconditions() const
 	{
 		return this->preconditions;
 	}
-	const std::vector<const Effect* > getEffects() const
+	const Effect* getEffects() const
 	{
 		return this->effects;
 	}

@@ -1,10 +1,11 @@
 ﻿#include "GOAPPlanner.h"
 
 #include "Action.h"
+#include "GameState.h"
 
 std::stack<const Action*> GOAPPlanner::plan(
-	const std::vector<Action>& possibleActions, 
-	const GameState& actualState, 
+	const std::vector<Action>& possibleActions,
+	const GameState& actualState,
 	const Action* goal) const
 {
 	//copy toutes les preconditions du goal
@@ -14,10 +15,10 @@ std::stack<const Action*> GOAPPlanner::plan(
 	std::stack<const Action*> actions;
 	int actionsCost = 1;
 	
-	
-	bool a = buildGraph(possibleActions, actualState, goal, actions, actionsCost);
-	
-	
+	GameState stateCopy = actualState;
+	bool a = buildGraph(possibleActions, stateCopy, goal, actions, actionsCost);
+
+
 	return actions;
 }
 
@@ -25,7 +26,7 @@ bool GOAPPlanner::buildGraph(const std::vector<Action>& possibleActions,
 	GameState& actualState,
 	const Action* goal,
 	std::stack<const Action*>& actionsQueue,
-	int& cost)
+	int& cost) const
 {
 
 	bool foundGraph = false;
@@ -38,26 +39,38 @@ bool GOAPPlanner::buildGraph(const std::vector<Action>& possibleActions,
 	//j'inscrise le cost
 
 	//tmp vec et cost
-	std::stack<const Action*> tmpActions;
-	int tmpCost = 1;
-	
-	for(auto& a : possibleActions)
+
+	for (auto& a : possibleActions)
 	{
-		if (goal->checkPreconditions(a))
+		// Check juste la compatibilité des enums
+		if (goal->getPreconditions()->checkPrecondition(a.getEffects()->getEffectType()))
 		{
-			tmpActions.push(&a);
-			tmpCost += a.getCost();
+
+			// On incrémente le cost
+			cost += a.getCost();
+			// On execute l'action
 			goal->performAction(actualState);
-			break;
+			// Si les préconditions de l'action sont déjé validés, on s'arrete
+			if (goal->getPreconditions()->checkPreconditionOnGs(actualState))
+			{
+				actionsQueue.push(&a);
+				foundGraph = true;
+				// Si compatible, on ajoute au tableau de actions possibles
+				break;
+			}
+			else
+			{
+				bool f = buildGraph(possibleActions, actualState, &a, actionsQueue, cost);
+				if(f)
+				{
+					foundGraph = true;
+					break;
+				}
+			}
 		}
-		else
-		{
-			tmpActions.push(&a);
-			tmpCost += a.getCost();
-			goal->performAction(actualState);
-			bool found = 0;
-		}
+
 	}
 
+	
 	return foundGraph;
 }

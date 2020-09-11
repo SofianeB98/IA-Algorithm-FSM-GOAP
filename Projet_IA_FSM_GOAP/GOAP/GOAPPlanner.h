@@ -14,5 +14,5 @@ public:
 		GameState& actualState,
 		const Action* goal,
 		std::stack<const Action*>& actionsQueue,
-		int& cost);
+		int& cost) const;
 };

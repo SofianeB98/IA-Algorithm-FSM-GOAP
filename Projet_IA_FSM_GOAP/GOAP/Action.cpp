@@ -4,8 +4,8 @@ Action::Action()
 {
 	this->cost = 1;
 
-	this->preconditions.reserve(5);
-	this->effects.reserve(2);
+	this->preconditions = nullptr;
+	this->effects = nullptr;
 }
 
 Action::Action(int cst) : cost(cst)
@@ -13,7 +13,7 @@ Action::Action(int cst) : cost(cst)
 	this->preconditions = nullptr;
 	this->effects = nullptr;
 }
-void Action::setEffect( Effect* e)
+void Action::setEffect(Effect* e)
 {
 	this->effects = e;
 }
@@ -41,29 +41,19 @@ Action::~Action()
 
 void Action::performAction(GameState& gs) const
 {
-	for (auto& e : effects)
-	{
-		e->applyEffect(gs);
-	}
+	effects->applyEffect(gs);
+
 }
 
 bool Action::checkPreconditions(const Action& a) const
 {
-	bool b = false;
 
-	for (auto& pA : a.getEffects())
-	{
-		for (auto& p : preconditions)
-		{
-			b |= p->checkPrecondition(pA->getEffect());
-		}
-	}
 
-	return b;
+	return this->preconditions->checkPrecondition(a.getEffects()->getEffectType());
 }
 
 
-bool Precondition::checkPrecondition(ActionType gs) const
+bool Precondition::checkPrecondition(const ActionType gs) const
 {
 	return this->condition == gs;
 }

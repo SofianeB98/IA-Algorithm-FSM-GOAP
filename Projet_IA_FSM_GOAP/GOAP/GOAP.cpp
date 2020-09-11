@@ -29,11 +29,6 @@ int main()
 			return true;
 	});
 
-
-	Action* makeHouse = new Action(1);
-	Precondition* p = new Precondition(ConditionType::STOCK_STONE);
-	Precondition* p2 = new Precondition(ConditionType::STOCK_WOOD);
-	makeHouse->addPreconditions(*p);
 	
 }
 
