@@ -147,7 +147,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Action.h" />
-    <ClInclude Include="PreconditionsEffectsName.h" />
     <ClInclude Include="GameMaster.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GOAPPlanner.h" />

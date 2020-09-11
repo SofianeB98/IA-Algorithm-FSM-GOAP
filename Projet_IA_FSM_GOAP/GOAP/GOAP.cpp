@@ -25,6 +25,7 @@ int main()
 		{
 			std::cout << i * f << " " << f + i << " " << s << std::endl;
 		});
+
 }
 
 

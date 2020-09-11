@@ -1,53 +1,79 @@
 ﻿#pragma once
 
-
-#include <iostream>
 #include <functional>
-#include <string>
 #include <vector>
 
+class Action;
 class GameState;
 
 class Effect
 {
+private:
+	std::function<void(GameState&)> effectFunction;
 public:
-	std::string pName;
-	bool val;
-
-	void applyEffect(/**/);
+	Effect() = default;
+	Effect(std::function<void(GameState&)>& fctn) : effectFunction(std::move(fctn)) {}
+	
+	void applyEffect(GameState& gs);
 };
 
 
 class Precondition
 {
 public:
-	std::string pName;
-	bool val;
-
-	void checkPrecondition(const Effect& effect);
+	std::function<bool(int)> effectFunction;
+	
+	bool checkPrecondition(const Action& act);
 };
 
 
 class Action
 {
-	std::string actionName;
-
 	uint8_t cost;
 
-	std::vector<Precondition> preconditions;
-	std::vector<Effect> effects; //std::pair<const std::string, const bool>
+	std::vector<const Precondition*> preconditions;
+	std::vector<const Effect*> effects;
 public:
 	Action();
-	Action(const std::string& name, int cost);
+	Action(int cst);
 
-	void performAction(std::function<void(GameState&)> fctn);
+	~Action();
 
+	void addEffects(const Effect& e);
+	void addPreconditions(const Precondition& p);
+	
+	void performAction(GameState& gs);
+
+	const std::vector<const Precondition* > getPreconditions() const
+	{
+		return this->preconditions;
+		const std::vector<const Precondition* > getPreconditions() const
+		{
+			return this->preconditions;
+		}
+		const std::vector<const Precondition* > getPreconditions() const
+		{
+			return this->preconditions;
+		}
+		const std::vector<const Precondition* > getPreconditions() const
+		{
+			return this->preconditions;
+			const std::vector<const Precondition* > getPreconditions() const
+			{
+				return this->preconditions;
+			}
+			const std::vector<const Precondition* > getPreconditions() const
+			{
+				return this->preconditions;
+			}
+		}
+	}
+	const std::vector<const Effect* > getEffects() const
+	{
+		return this->effects;
+	}
 	const int getCost() const
 	{
 		return this->cost;
-	}
-	const std::string getActionName() const
-	{
-		return this->actionName;
 	}
 };
