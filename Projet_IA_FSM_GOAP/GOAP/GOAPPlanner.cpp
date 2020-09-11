@@ -1,21 +1,38 @@
 ﻿#include "GOAPPlanner.h"
+#include "Action.h"
 
-void GOAPPlanner::plan(const std::vector<Action>& actions, std::vector<std::pair<std::string, bool>> actualState, std::vector<std::pair<std::string, bool>> goal)
+std::queue<const Action*> GOAPPlanner::plan(
+	const std::vector<Action>& possibleActions, 
+	const GameState& actualState, 
+	const Action* goal) const
 {
-	//reset toutes les action
-	// - exemple : Je suis plus en trian de miner, etc etc
+	//copy toutes les preconditions du goal
+	//dès qu'une precondition est remplis
+	//je chercher a combler le reste
 
+	std::queue<const Action*> actions;
+	//vector-> action
+	//int cost;
+	//
+	//
+	//
+	//
+	
+	for(auto& a : possibleActions)
+	{
+		//tmp vec et cost
+		
+		if(goal->checkPreconditions(a))
+		{
+			//do somthing, add to queue
+			//add Make sotne
+		}
+	}
 
 	
-	// --build graph
-	// Pour chaque action :
-	// - est ce que la precondition de laction est remplis par le state de la node a test ?
-	//	- Oui --> j'applique l'effect de cette action sur le state et j'en créer un nouveau
-	//	- puis je l'ajoute au graph
-	//	- Non ? ---> Je recrer u nset sans cette action
-	// ---------------------------
-
-
-	//Je renvois un boolean si oui ou non j'ai reussis a planifier
 	
+	return actions;
+	
+	//toutes les prec fill
+	//return
 }

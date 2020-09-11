@@ -6,24 +6,53 @@
 class Action;
 class GameState;
 
+enum ConditionType
+{
+	STOCK_WOOD,
+	STOCK_STONE,
+	
+};
+
 class Effect
 {
 private:
+	ConditionType effect;
+	
 	std::function<void(GameState&)> effectFunction;
 public:
 	Effect() = default;
-	Effect(std::function<void(GameState&)>& fctn) : effectFunction(std::move(fctn)) {}
+	Effect(const ConditionType c) : effect(c) {}
+
+	~Effect();
 	
-	void applyEffect(GameState& gs);
+	void applyEffect(GameState& gs) const;
+	
+	void setEffect(std::function<void(GameState&)> fctn)
+	{
+		effectFunction = std::move(fctn);
+	}
+	ConditionType getEffect() const
+	{
+		return this->effect;
+	}
 };
 
 
 class Precondition
 {
-public:
-	std::function<bool(int)> effectFunction;
+	ConditionType condition;
 	
-	bool checkPrecondition(const Action& act);
+public:
+	Precondition() = default;
+	Precondition(const ConditionType c) : condition(c){}
+	
+	~Precondition();
+	
+	bool checkPrecondition(ConditionType c) const;
+	ConditionType getPrecondition() const
+	{
+		return this->condition;
+	}
 };
 
 
@@ -42,31 +71,13 @@ public:
 	void addEffects(const Effect& e);
 	void addPreconditions(const Precondition& p);
 	
-	void performAction(GameState& gs);
-
+	void performAction(GameState& gs) const;
+	
+	bool checkPreconditions(const Action& a) const;
+	
 	const std::vector<const Precondition* > getPreconditions() const
 	{
 		return this->preconditions;
-		const std::vector<const Precondition* > getPreconditions() const
-		{
-			return this->preconditions;
-		}
-		const std::vector<const Precondition* > getPreconditions() const
-		{
-			return this->preconditions;
-		}
-		const std::vector<const Precondition* > getPreconditions() const
-		{
-			return this->preconditions;
-			const std::vector<const Precondition* > getPreconditions() const
-			{
-				return this->preconditions;
-			}
-			const std::vector<const Precondition* > getPreconditions() const
-			{
-				return this->preconditions;
-			}
-		}
 	}
 	const std::vector<const Effect* > getEffects() const
 	{

@@ -1,13 +1,14 @@
 ﻿#pragma once
+#include <queue>
 #include <string>
 #include <vector>
-
-class Action;
+#include "Action.h";
 
 class GOAPPlanner
 {
 public:
-	void plan(const std::vector<Action>&, //action
-		std::vector<std::pair<std::string, bool>> actualState, //actual state
-		std::vector<std::pair<std::string, bool>> goal); //goal
+	std::queue<const Action*> plan(const std::vector<Action>& possibleActions, const GameState& actualState,
+		const Action* const goal) const;
+
+	bool buildGraph();
 };

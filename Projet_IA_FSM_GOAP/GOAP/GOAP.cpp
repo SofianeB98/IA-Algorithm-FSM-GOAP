@@ -1,9 +1,11 @@
 #include <functional>
 #include <iostream>
 
-void test(const std::function<void(int, float, std::string)>& fn)
+#include "Action.h"
+
+void test(const std::function<bool(void)>& fn)
 {
-	fn(1, 1.0f, "coucou !");
+	fn();
 }
 
 int main()
@@ -19,13 +21,20 @@ int main()
 		}
 	};
 
-	test(t);
+	test([&val]()
+	{
+			if (val > 0)
+				return false;
+		
+			return true;
+	});
 
-	test([&val](int i, float f, std::string s)
-		{
-			std::cout << i * f << " " << f + i << " " << s << std::endl;
-		});
 
+	Action* makeHouse = new Action(1);
+	Precondition* p = new Precondition(ConditionType::STOCK_STONE);
+	Precondition* p2 = new Precondition(ConditionType::STOCK_WOOD);
+	makeHouse->addPreconditions(*p);
+	
 }
 
 
