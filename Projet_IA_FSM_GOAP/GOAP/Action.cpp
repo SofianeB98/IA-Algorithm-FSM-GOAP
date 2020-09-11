@@ -10,46 +10,38 @@ Action::Action()
 
 Action::Action(int cst) : cost(cst)
 {
-	this->preconditions.reserve(5);
-	this->effects.reserve(2);
+	this->preconditions = nullptr;
+	this->effects = nullptr;
+}
+void Action::setEffect( Effect* e)
+{
+	this->effects = e;
 }
 
-void Action::addEffects(const Effect& e)
+void Action::setPrecondition(Precondition* p)
 {
-	this->effects.emplace_back(e);
-}
-
-void Action::addPreconditions(const Precondition& p)
-{
-	this->preconditions.emplace_back(p);
+	this->preconditions = p;
 }
 
 Action::~Action()
 {
-	for (auto& p : preconditions)
+	if (preconditions != nullptr)
 	{
-		if (p != nullptr)
-		{
-			delete p;
-			p = nullptr;
-		}
+		delete preconditions;
+		preconditions = nullptr;
 	}
-	preconditions.clear();
 
-	for (auto& e : effects)
+	if (effects != nullptr)
 	{
-		if (e != nullptr)
-		{
-			delete e;
-			e = nullptr;
-		}
+		delete effects;
+		effects = nullptr;
 	}
-	effects.clear();
+
 }
 
 void Action::performAction(GameState& gs) const
 {
-	for(auto& e : effects)
+	for (auto& e : effects)
 	{
 		e->applyEffect(gs);
 	}
@@ -58,20 +50,20 @@ void Action::performAction(GameState& gs) const
 bool Action::checkPreconditions(const Action& a) const
 {
 	bool b = false;
-	
-	for (auto& p : preconditions)
+
+	for (auto& pA : a.getEffects())
 	{
-		for (auto& pA : a.getEffects())
+		for (auto& p : preconditions)
 		{
 			b |= p->checkPrecondition(pA->getEffect());
 		}
 	}
-	
+
 	return b;
 }
 
 
-bool Precondition::checkPrecondition(ConditionType gs) const
+bool Precondition::checkPrecondition(ActionType gs) const
 {
 	return this->condition == gs;
 }
@@ -79,7 +71,7 @@ bool Precondition::checkPrecondition(ConditionType gs) const
 
 Precondition::~Precondition()
 {
-	
+
 }
 
 
@@ -87,7 +79,7 @@ Precondition::~Precondition()
 
 Effect::~Effect()
 {
-	
+
 }
 
 void Effect::applyEffect(GameState& gs) const

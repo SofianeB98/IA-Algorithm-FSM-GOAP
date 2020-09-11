@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include <queue>
+#include <stack>
 #include <string>
 #include <vector>
 #include "Action.h";
@@ -7,8 +7,12 @@
 class GOAPPlanner
 {
 public:
-	std::queue<const Action*> plan(const std::vector<Action>& possibleActions, const GameState& actualState,
+	std::stack<const Action*> plan(const std::vector<Action>& possibleActions, const GameState& actualState,
 		const Action* const goal) const;
 
-	bool buildGraph();
+	bool buildGraph(const std::vector<Action>& possibleActions,
+		GameState& actualState,
+		const Action* goal,
+		std::stack<const Action*>& actionsQueue,
+		int& cost);
 };
