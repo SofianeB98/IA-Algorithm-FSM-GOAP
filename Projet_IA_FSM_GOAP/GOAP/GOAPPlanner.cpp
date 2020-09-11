@@ -33,7 +33,7 @@ bool GOAPPlanner::buildGraph(const std::vector<Action*>& possibleActions,
 		if (action == goal)
 			continue;
 
-		if (goal->getPreconditions() == nullptr)
+		if (goal->getPreconditions() == nullptr || goal->getPreconditions()->getPrecondition() == ActionType::NO_ACTION)
 		{
 			foundGraph = true;
 			break;

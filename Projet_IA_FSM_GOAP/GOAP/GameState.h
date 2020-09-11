@@ -9,7 +9,7 @@ public:
 	int availableAxe = 0;
 	int craftedHouse = 0;
 
-	int axeEnergy = 5;
+	int axeEnergy = 0;
 	
 	bool hasAxe = false;
 

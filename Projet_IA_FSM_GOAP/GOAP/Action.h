@@ -12,6 +12,7 @@ enum ActionType
 	STOCK_WOOD,
 	HAVE_AXE,
 	BUILD_AXE,
+	NO_ACTION
 };
 
 class Effect
