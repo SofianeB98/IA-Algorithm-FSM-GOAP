@@ -1,35 +1,17 @@
 #include <functional>
 #include <iostream>
 
-#include "Action.h"
-
-void test(const std::function<bool(void)>& fn)
-{
-	fn();
-}
+#include "GameMaster.h"
 
 int main()
 {
-	std::cout << "Hello World!\n";
+	GameMaster gm;
 
-	int val = 0;
+	gm.StartGame();
 
-	const std::function<void(int, float, std::string)> t{
-		[&val](int i, float f, std::string s)
-		{
-			std::cout << i << " " << f << " " << s << std::endl;
-		}
-	};
+	gm.UdapteGame();
 
-	test([&val]()
-	{
-			if (val > 0)
-				return false;
-		
-			return true;
-	});
-
-	
+	gm.DeleteGame();
 }
 
 

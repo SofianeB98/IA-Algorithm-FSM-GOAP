@@ -1,6 +1,4 @@
 ﻿#include "GOAPPlanner.h"
-
-#include "Action.h"
 #include "GameState.h"
 
 std::stack<const Action*> GOAPPlanner::plan(
@@ -13,11 +11,11 @@ std::stack<const Action*> GOAPPlanner::plan(
 	//je chercher a combler le reste
 
 	std::stack<const Action*> actions;
-	int actionsCost = 1;
-	
-	GameState stateCopy = actualState;
-	bool a = buildGraph(possibleActions, stateCopy, goal, actions, actionsCost);
+	int actionsCost = 0;
 
+	GameState stateCopy = actualState;
+
+	bool a = buildGraph(possibleActions, stateCopy, goal, actions, actionsCost);
 
 	return actions;
 }
@@ -28,49 +26,39 @@ bool GOAPPlanner::buildGraph(const std::vector<Action>& possibleActions,
 	std::stack<const Action*>& actionsQueue,
 	int& cost) const
 {
-
 	bool foundGraph = false;
-	//pour chaque action disponnible
 
-	//si conditions ok
-
-	//j'applique l'effet au GS
-	//j'ajoute
-	//j'inscrise le cost
-
-	//tmp vec et cost
-
-	for (auto& a : possibleActions)
+	for (auto& action : possibleActions)
 	{
 		// Check juste la compatibilité des enums
-		if (goal->getPreconditions()->checkPrecondition(a.getEffects()->getEffectType()))
+		if (goal->getPreconditions()->checkPrecondition(action.getEffects()->getEffectType()) 
+			|| goal->getPreconditions() == nullptr)
 		{
-
 			// On incrémente le cost
-			cost += a.getCost();
+			cost += action.getCost();
 			// On execute l'action
 			goal->performAction(actualState);
 			// Si les préconditions de l'action sont déjé validés, on s'arrete
-			if (goal->getPreconditions()->checkPreconditionOnGs(actualState))
-			{
-				actionsQueue.push(&a);
-				foundGraph = true;
-				// Si compatible, on ajoute au tableau de actions possibles
-				break;
-			}
-			else
-			{
-				bool f = buildGraph(possibleActions, actualState, &a, actionsQueue, cost);
-				if(f)
-				{
-					foundGraph = true;
-					break;
-				}
-			}
+			//if (goal->getPreconditions()->checkPreconditionOnGs(actualState))
+
+			actionsQueue.push(&action);
+			foundGraph = true;
+			// Si compatible, on ajoute au tableau de actions possibles
+			break;
 		}
 
+		// Sinon, On execute l'action
+		goal->performAction(actualState);
+
+		const bool found = buildGraph(possibleActions, actualState, &action, actionsQueue, cost);
+
+		if (found)
+		{
+			foundGraph = true;
+			break;
+		}
 	}
 
-	
+
 	return foundGraph;
 }

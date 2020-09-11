@@ -1,7 +1,15 @@
 ﻿#pragma once
+#include "GameState.h"
+#include "GOAPPlanner.h"
 
-class GameMaster
+struct GameMaster
 {
-public:
+	GameState* currentGameState;
+	GOAPPlanner* goap;
+
+	void StartGame();
 	
+	void UdapteGame();
+	
+	void DeleteGame();
 };

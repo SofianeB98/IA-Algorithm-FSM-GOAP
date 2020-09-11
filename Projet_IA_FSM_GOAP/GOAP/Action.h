@@ -8,9 +8,10 @@ class GameState;
 
 enum ActionType
 {
+	BUILD_HOUSE,
 	STOCK_WOOD,
-	STOCK_STONE,
-	
+	HAVE_AXE,
+	BUILD_AXE,
 };
 
 class Effect
