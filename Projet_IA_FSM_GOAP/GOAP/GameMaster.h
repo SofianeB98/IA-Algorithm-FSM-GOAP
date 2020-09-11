@@ -6,7 +6,9 @@ struct GameMaster
 {
 	GameState* currentGameState;
 	GOAPPlanner* goap;
+	Action* goal;
 
+	void waitForMilliseconds(int milli);
 	void StartGame();
 	
 	void UdapteGame();

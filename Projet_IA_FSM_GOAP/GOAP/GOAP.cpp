@@ -5,7 +5,7 @@
 
 int main()
 {
-	GameMaster gm;
+	GameMaster gm{};
 
 	gm.StartGame();
 
