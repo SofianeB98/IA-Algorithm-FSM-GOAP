@@ -1,78 +1,81 @@
 ﻿#include "Action.h"
 
+#pragma region ACTION CLASS
 Action::Action()
 {
 	this->cost = 1;
 
-	this->preconditions = nullptr;
-	this->effects = nullptr;
+	this->precondition = nullptr;
+	this->effect = nullptr;
 }
 
 Action::Action(int cst) : cost(cst)
 {
-	this->preconditions = nullptr;
-	this->effects = nullptr;
+	this->precondition = nullptr;
+	this->effect = nullptr;
 }
+
 void Action::setEffect(Effect* e)
 {
-	this->effects = e;
+	this->effect = e;
 }
 
 void Action::setPrecondition(Precondition* p)
 {
-	this->preconditions = p;
+	this->precondition = p;
 }
 
 Action::~Action()
 {
-	if (preconditions != nullptr)
+	if (precondition != nullptr)
 	{
-		delete preconditions;
-		preconditions = nullptr;
+		delete precondition;
+		precondition = nullptr;
 	}
 
-	if (effects != nullptr)
+	if (effect != nullptr)
 	{
-		delete effects;
-		effects = nullptr;
+		delete effect;
+		effect = nullptr;
 	}
 
 }
 
 void Action::performAction(GameState& gs) const
 {
-	effects->applyEffect(gs);
-
+	effect->applyEffect(gs);
 }
 
 bool Action::checkPreconditions(const Action& a) const
 {
 
 
-	return this->preconditions->checkPrecondition(a.getEffects()->getEffectType());
+	return this->precondition->checkPrecondition(a.getEffect()->getEffectType());
 }
+#pragma endregion 
 
-
-bool Precondition::checkPrecondition(const ActionType gs) const
+#pragma region PRECONDITION CLASS
+bool Precondition::checkPrecondition(const ActionType oth) const
 {
-	return this->condition == gs;
+	//return true si la condition == oth
+	return this->condition == oth;
 }
-
 
 Precondition::~Precondition()
 {
 
 }
+#pragma endregion 
 
-
-
+#pragma region EFFECT CLASS
+void Effect::applyEffect(GameState& gs) const
+{
+	//Applique l'effet sur le gs
+	this->effectFunction(gs);
+}
 
 Effect::~Effect()
 {
 
 }
-
-void Effect::applyEffect(GameState& gs) const
-{
-	this->effectFunction(gs);
-}
+#pragma endregion 

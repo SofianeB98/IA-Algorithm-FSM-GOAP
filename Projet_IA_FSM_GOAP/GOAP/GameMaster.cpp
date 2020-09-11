@@ -1,11 +1,10 @@
 ﻿#include "GameMaster.h"
 
-
-
 #include <cassert>
 #include <ctime>
 #include <iostream>
 
+//Fonction qui permet d'attendre un peu
 void GameMaster::waitForMilliseconds(int milli)
 {
 	// Cross-platform sleep function
@@ -19,37 +18,49 @@ void GameMaster::waitForMilliseconds(int milli)
 
 void GameMaster::StartGame()
 {
+	//creation du planner
 	goap = new GOAPPlanner();
 
+	// creation des divers preconditions necessaire
 	Precondition* woodPrec = new Precondition(ActionType::STOCK_WOOD);
 	woodPrec->setPrecondition([](const GameState& gs)
 		{
+			//L'effet lié à cette precondition peut etre realiser lorsque
+			//le gamestate a 150 de bois ou plus
 			if (gs.woodStock >= 150)
 				return true;
 
+			//sinon on continue
 			return false;
 		});
 
 	Precondition* haveAxePrec = new Precondition(ActionType::HAVE_AXE);
 	haveAxePrec->setPrecondition([](const GameState& gs)
 		{
+			//L'effet lié à cette precondition peut etre realiser lorsque
+			//le gamestate est equiper d'une hache
 			return gs.hasAxe;
 		});
 
 	Precondition* buildAxePrec = new Precondition(ActionType::BUILD_AXE);
 	buildAxePrec->setPrecondition([](const GameState& gs)
 		{
+			//L'effet lié à cette precondition peut etre realiser lorsque
+			//le gamestate a des Haches, et qu'il n'est plus equiper d'une hache
 			return gs.availableAxe > 0 && !gs.hasAxe;
 		});
 
 	Precondition* beforeBuildAxePrec = new Precondition(ActionType::NO_ACTION);
 	beforeBuildAxePrec->setPrecondition([](const GameState& gs)
 		{
-			return gs.availableAxe < 1 && gs.hasAxe == false;
+			//L'effet lié à cette precondition peut etre realiser lorsque
+			//le gamestate n'a plus de Hache, et qu'il n'est plus equiper d'une hache
+			return gs.availableAxe < 1 && !gs.hasAxe;
 		});
 
 	// ---------------------------------------------------------------------------------
 
+	//creation des divers effets
 	Effect* houseEffect = new Effect(ActionType::BUILD_HOUSE);
 	houseEffect->setEffect([](GameState& gs)
 		{
@@ -94,6 +105,7 @@ void GameMaster::StartGame()
 
 	// ---------------------------------------------------------------------------------
 
+	//creation des divers actions
 	goal = new Action(5);
 	goal->setEffect(houseEffect);
 	goal->setPrecondition(woodPrec);
@@ -111,56 +123,85 @@ void GameMaster::StartGame()
 	buildAxe->setPrecondition(beforeBuildAxePrec);
 
 	// ---------------------------------------------------------------------------------
-	
-	currentGameState = new GameState();
-	currentGameState->availableActions.reserve(20);
 
-	currentGameState->availableActions.push_back(goal);
-	currentGameState->availableActions.push_back(stockWood);
-	currentGameState->availableActions.push_back(pickupAxe);
-	currentGameState->availableActions.push_back(buildAxe);
+	//creation du gamestate
+	currentGameState = new GameState();
+	
+	//on alloc de la place au actions possible
+	availableActions.reserve(10);
+	//on ajoute les action
+	availableActions.push_back(goal);
+	availableActions.push_back(stockWood);
+	availableActions.push_back(pickupAxe);
+	availableActions.push_back(buildAxe);
 }
 
 void GameMaster::UdapteGame()
 {
+	//Tant qu'on a pas construit X maisons
 	while (currentGameState->craftedHouse < 2)
 	{
-		std::vector<Action*> plan = goap->plan(currentGameState->availableActions, *currentGameState, goal);
+		//On recherche le plan d'action optimal
+		std::vector<Action*> plan = goap->plan(availableActions, *currentGameState, goal);
 
+		//on verrifie qu'il y a au moins 1 action
 		assert(!plan.empty(), " PLAN EMPTY !!!");
 
+		//on applique les action depuis la fin
 		for (int i = plan.size() - 1; i >= 0; --i)
 		{
-			if (plan[i]->getPreconditions()->checkPreconditionOnGs(*currentGameState))
+			//Si la condition sur le Gamestate est valide
+			if (plan[i]->getPrecondition()->checkPreconditionOnGs(*currentGameState))
 			{
+				//On l'applique
 				plan[i]->performAction(*currentGameState);
-				waitForMilliseconds(1000);
 			}
+
+			//On attend X millisecond avant de continuer
+			waitForMilliseconds(500);
 		}
 
 		std::cout << "\n" << std::endl;
 
-		if (goal->getPreconditions()->checkPreconditionOnGs(*currentGameState))
+		//Enfinc on regarde si on peut réaliser notre objectif
+		if (goal->getPrecondition()->checkPreconditionOnGs(*currentGameState))
 		{
-			goal->getEffects()->applyEffect(*currentGameState);
-
+			goal->getEffect()->applyEffect(*currentGameState);
 		}
 
+		//on clear le plan
+		//il n'est pas necessaire de le clear etant donner qu'on le reassigne
+		//de plus il n'est pas necessaire de delete les action qu'il contient vu qu'elle seront detruite dans
+		//delete game
 		plan.clear();
 
-		waitForMilliseconds(1000);
+		//on attend X milliseconde avant la prochaine boucle
+		waitForMilliseconds(500);
 	}
 }
 
 
 void GameMaster::DeleteGame()
 {
+	//detruit automatiquement toutes les action, prec et effet
+	for (auto a : availableActions)
+	{
+		if (a != nullptr)
+		{
+			delete a;
+			a = nullptr;
+		}
+	}
+	availableActions.clear();
+	
+	//destruction du game state
 	if (currentGameState != nullptr)
 	{
 		delete currentGameState;
 		currentGameState = nullptr;
 	}
 
+	//destruction du planner
 	if (goap != nullptr)
 	{
 		delete goap;
