@@ -58,6 +58,12 @@ void GameMaster::StartGame()
 			return gs.availableAxe < 1 && !gs.hasAxe;
 		});
 
+	Precondition* stickPrec = new Precondition(ActionType::NO_ACTION);
+	stickPrec->setPrecondition([](const GameState& gs)
+		{
+			return true;
+		});
+	
 	// ---------------------------------------------------------------------------------
 
 	//creation des divers effets
@@ -86,6 +92,15 @@ void GameMaster::StartGame()
 			}
 		});
 
+	Effect* stockStickEffect = new Effect(ActionType::STOCK_WOOD);
+	stockStickEffect->setEffect([](GameState& gs)
+		{
+			gs.woodStock += 1;
+
+			std::cout << "Je recolte un baton !! + 1 :::: " << gs.woodStock << std::endl;
+
+		});
+
 	Effect* pickupAxeEffect = new Effect(ActionType::HAVE_AXE);
 	pickupAxeEffect->setEffect([](GameState& gs)
 		{
@@ -110,7 +125,11 @@ void GameMaster::StartGame()
 	goal->setEffect(houseEffect);
 	goal->setPrecondition(woodPrec);
 
-	Action* stockWood = new Action(2);
+	Action* stockStick = new Action(20);
+	stockStick->setEffect(stockStickEffect);
+	stockStick->setPrecondition(stickPrec);
+	
+	Action* stockWood = new Action(1);
 	stockWood->setEffect(stockWoodEffect);
 	stockWood->setPrecondition(haveAxePrec);
 
@@ -134,6 +153,7 @@ void GameMaster::StartGame()
 	availableActions.push_back(stockWood);
 	availableActions.push_back(pickupAxe);
 	availableActions.push_back(buildAxe);
+	availableActions.push_back(stockStick);
 }
 
 void GameMaster::UdapteGame()
