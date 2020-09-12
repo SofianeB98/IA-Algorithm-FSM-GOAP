@@ -114,25 +114,21 @@ void Monster::heal()
 
 void Monster::CreateStateMachine()
 {
+	// Initialisation de la state machine
 	this->machine = new StateMachine::StateMachineBase();
-
+	// Création de tous les states
 	State* beginState = new StateMachine::BeginTurnState();
 	State* escapeState = new StateMachine::EscapeState();
 	State* attackState = new AttackState();
 	State* elementalAttackState = new ElementAttackState();
 	State* normalAttackState = new NormalAttackState();
 
-	// Begin to Escape
-		// Weakness
-	//BaseTransition* beginToEscapeWeakness = new IsOpponentMyWeaknessTransition();
-	//PairTransitionToState* beginToEscapeWeaknessPair = new PairTransitionToState(escapeState, beginToEscapeWeakness);
-	//beginState->AddTransition(beginToEscapeWeaknessPair);
-	// Life < 10
-	BaseTransition* beginToEscapeLife = new LifeConditionTransition(false, true, 10);
+	// Création des conditions
+	BaseTransition* beginToEscapeLife = new LifeConditionTransition(false, true, 10); // Si l'adversaire a plus de 10 point de vie
 	PairTransitionToState* beginToEscapeLifePair = new PairTransitionToState(escapeState, beginToEscapeLife);
 	beginState->AddTransition(beginToEscapeLifePair);
 
-	BaseTransition* beginToEscapeLifeAndWeakness = new LifeConditionAndWeaknessTransition(50);
+	BaseTransition* beginToEscapeLifeAndWeakness = new LifeConditionAndWeaknessTransition(50); // Si le joueur a moins de 50pdv et que l'adversaire de notre élément faiblesse
 	PairTransitionToState* beginToEscapeLifeAndWeaknessPair = new PairTransitionToState(escapeState, beginToEscapeLifeAndWeakness);
 	beginState->AddTransition(beginToEscapeLifeAndWeaknessPair);
 
@@ -140,27 +136,27 @@ void Monster::CreateStateMachine()
 
 	// Begin to attack
 		// Life > 10
-	BaseTransition* beginToAttack = new LifeConditionTransition(true, true, 10);
+	BaseTransition* beginToAttack = new LifeConditionTransition(true, true, 10); // Si le monstre a plus de 10 point de vie
 	PairTransitionToState* beginToAttackPair = new PairTransitionToState(attackState, beginToAttack);
 	beginState->AddTransition(beginToAttackPair);
 
 	//attack to elementalAtack
 		// UseElementalTransition
-	BaseTransition* attackToElemental = new UseElementalTransition();
+	BaseTransition* attackToElemental = new UseElementalTransition(); // Si l'adversaire est faible face à notre élément
 	PairTransitionToState* attackToElementalPair = new PairTransitionToState(elementalAttackState, attackToElemental);
 	attackState->AddTransition(attackToElementalPair);
 	// attack to neutral
 		// UseNeutral
-	BaseTransition* attackToNeutral = new UseNeutralTransition();
+	BaseTransition* attackToNeutral = new UseNeutralTransition(); // Si il ne l'est pas
 	PairTransitionToState* attackToNeutralPair = new PairTransitionToState(normalAttackState, attackToNeutral);
 	attackState->AddTransition(attackToNeutralPair);
 
 	// Back to Begin
-	BaseTransition* neutralToBegin = new EmptyTransition();
+	BaseTransition* neutralToBegin = new EmptyTransition();// Retour en état initial systématique 
 	PairTransitionToState* neutralToBeginPair = new PairTransitionToState(beginState, neutralToBegin);
 	normalAttackState->AddTransition(neutralToBeginPair);
 
-	BaseTransition* elementalToBegin = new EmptyTransition();
+	BaseTransition* elementalToBegin = new EmptyTransition(); // retour en état initial systématique
 	PairTransitionToState* elementalToBeginPair = new PairTransitionToState(beginState, elementalToBegin);
 	elementalAttackState->AddTransition(elementalToBeginPair);
 

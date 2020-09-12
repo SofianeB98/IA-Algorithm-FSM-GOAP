@@ -16,12 +16,12 @@ void WorldMaster::waitForMilliseconds(int milli)
 		//blank loop for waiting
 	}
 }
-
+// Initialise le combat
 void WorldMaster::StartWorld()
 {
 	WorldMaster::escape = false;
 	int choosenMonsterElement = 1;
-
+	// Selection de l'élément du monstre du joueur
 	std::cout << "Choose your monster's element \n";
 	std::cout << "1 - FIRE \n";
 	std::cout << "2 - WATER \n";
@@ -29,7 +29,7 @@ void WorldMaster::StartWorld()
 
 	std::cin >> choosenMonsterElement;
 
-	//Create IA player monster
+	//Création du monstre du joueur
 	switch (choosenMonsterElement)
 	{
 	default:
@@ -48,17 +48,19 @@ void WorldMaster::StartWorld()
 		std::cout << "You've choosen GRASS !! It's so Ecologic, Vegan !" << std::endl;
 		break;
 	}
-	
+	// Initialisation de la state machine
 	monsterPlayer->CreateStateMachine();
 }
 
+// Boucle de jeu
 void WorldMaster::UpdateWorld()
 {	
+	// On combat tant que le monstre du joueur est vivant
 	while(monsterPlayer->isAlive())
 	{
 		waitForMilliseconds(2500);
 		
-		//heal
+		//Au début de chaque combat, le monstre est soigné
 		monsterPlayer->heal();
 		
 		//generate new monster Random (life + element)
@@ -90,9 +92,9 @@ void WorldMaster::UpdateWorld()
 		monsterRandom = new Monster(elem, rdmLife);
 		monsterRandom->CreateStateMachine();
 		
-		//battle
+		//Simulation du combat
 		ProcessBattle();
-
+		// Delete du monstre ennemie si il est mort
 		if (monsterRandom != nullptr)
 		{
 			delete monsterRandom;
@@ -109,7 +111,7 @@ void WorldMaster::UpdateWorld()
 void WorldMaster::ProcessBattle()
 {
 	std::cout << "Begin New Battle !!!!! " << std::endl;
-	
+	// Tant que les deux monstres sont en vie et qu'aucun des deux n'as fuit le combat
 	while ((monsterPlayer->isAlive() && monsterRandom->isAlive()) || !WorldMaster::escape)
 	{
 		if (WorldMaster::escape)
@@ -125,10 +127,7 @@ void WorldMaster::ProcessBattle()
 		
 		std::cout << "Begin Player Monster Turn \n";
 		
-		//Init turn state ?
-		//While is monster turn
-		//-Process State
-		//while(monsterPlayer->getLife() > 6)
+		// On actualise la state machine du monstre du joueur et on joue l'action associé à chaque état
 		monsterPlayer->machine->ProcessState(*monsterPlayer, *monsterRandom);
 		
 		std::cout << "End Player Monster Turn" << std::endl;
@@ -146,10 +145,7 @@ void WorldMaster::ProcessBattle()
 		}
 		
 		std::cout << "Begin Monster Random Turn \n";
-		//Init turn state ?
-		//While is monster turn
-		//-Process State
-		//while (monsterRandom->isAlive())
+		//On actualise la state machine du monstre adverse et on joue l'action associé à chaque état
 		monsterRandom->machine->ProcessState(*monsterRandom, *monsterPlayer);
 
 		std::cout << "End Monster Random Turn \n \n" << std::endl;
@@ -162,7 +158,7 @@ void WorldMaster::ProcessBattle()
 
 	WorldMaster::escape = false;
 }
-
+// Delete en cascade de tous les pointeurs
 void WorldMaster::DeleteWorld()
 {
 	if (monsterPlayer != nullptr)

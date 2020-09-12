@@ -4,7 +4,7 @@
 class Monster;
 
 extern bool escape;
-
+// Manager gérant la création des monstres et l'exection des combat
 class WorldMaster
 {
 public:
